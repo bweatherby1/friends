@@ -1,4 +1,4 @@
-# Simply Books
+# Fairway Friends
 
 [See Live Demo of this Template](https://drt-next-js-template.netlify.app/)
 
