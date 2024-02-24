@@ -51,7 +51,6 @@ function BookForm({ obj }) {
     }
   };
 
-
   return (
     <Form onSubmit={handleSubmit}>
       <h2 className="text-white mt-5">{obj.firebaseKey ? 'Update' : 'Create'} Book</h2>

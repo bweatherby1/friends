@@ -4,8 +4,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Link from 'next/link';
 import {
-  Navbar, Container, Nav, Button
+  Navbar, Container, Nav, Button,
 } from 'react-bootstrap';
+
 export default function NavBar() {
   return (
     <Navbar collapseOnSelect expand="lg" bg="primary" variant="dark">
