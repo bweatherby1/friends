@@ -1,32 +1,31 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useRouter } from 'next/router';
 import PropTypes from 'prop-types';
 import FloatingLabel from 'react-bootstrap/FloatingLabel';
 import Form from 'react-bootstrap/Form';
 import { Button } from 'react-bootstrap';
 import { useAuth } from '../../utils/context/authContext';
-import { getAuthors } from '../../api/authorData';
-import { createBook, updateBook } from '../../api/bookData';
+// import { getAuthors } from '../../api/authorData';
+import { createCourse, updateCourse } from '../../api/courseData';
 
 const initialState = {
-  description: '',
   image: '',
-  price: '',
-  sale: false,
-  title: '',
+  name: '',
+  address: '',
+  description: '',
 };
 
-function BookForm({ obj }) {
+function CourseForm({ obj }) {
   const [formInput, setFormInput] = useState(initialState);
-  const [authors, setAuthors] = useState([]);
+  // const [authors, setAuthors] = useState([]);
   const router = useRouter();
   const { user } = useAuth();
 
-  useEffect(() => {
-    getAuthors(user.uid).then(setAuthors);
+  // useEffect(() => {
+  //   getAuthors(user.uid).then(setAuthors);
 
-    if (obj.firebaseKey) setFormInput(obj);
-  }, [obj, user]);
+  //   if (obj.firebaseKey) setFormInput(obj);
+  // }, [obj, user]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -39,37 +38,48 @@ function BookForm({ obj }) {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (obj.firebaseKey) {
-      updateBook(formInput).then(() => router.push(`/book/${obj.firebaseKey}`));
+      updateCourse(formInput).then(() => router.push(`/course/${obj.firebaseKey}`));
     } else {
       const payload = { ...formInput, uid: user.uid };
-      createBook(payload).then(({ name }) => {
+      createCourse(payload).then(({ name }) => {
         const patchPayload = { firebaseKey: name };
-        updateBook(patchPayload).then(() => {
+        updateCourse(patchPayload).then(() => {
           router.push('/');
         });
       });
     }
   };
 
-
   return (
     <Form onSubmit={handleSubmit}>
-      <h2 className="text-white mt-5">{obj.firebaseKey ? 'Update' : 'Create'} Book</h2>
+      <h2 className="text-white mt-5">{obj.firebaseKey ? 'Update' : 'Create'} Course</h2>
 
-      {/* TITLE INPUT  */}
-      <FloatingLabel controlId="floatingInput1" label="Book Title" className="mb-3">
+      {/* Name INPUT  */}
+      <FloatingLabel controlId="floatingInput1" label="Course Name" className="mb-3">
         <Form.Control
           type="text"
-          placeholder="Enter a title"
-          name="title"
-          value={formInput.title}
+          placeholder="Enter Club Name"
+          name="name"
+          value={formInput.name}
+          onChange={handleChange}
+          required
+        />
+      </FloatingLabel>
+
+      {/* Address INPUT  */}
+      <FloatingLabel controlId="floatingInput1" label="Course Address" className="mb-3">
+        <Form.Control
+          type="text"
+          placeholder="Enter Club Name"
+          name="address"
+          value={formInput.address}
           onChange={handleChange}
           required
         />
       </FloatingLabel>
 
       {/* IMAGE INPUT  */}
-      <FloatingLabel controlId="floatingInput2" label="Book Image" className="mb-3">
+      <FloatingLabel controlId="floatingInput2" label="Course Image" className="mb-3">
         <Form.Control
           type="url"
           placeholder="Enter an image url"
@@ -80,19 +90,7 @@ function BookForm({ obj }) {
         />
       </FloatingLabel>
 
-      {/* PRICE INPUT  */}
-      <FloatingLabel controlId="floatingInput3" label="Book Price" className="mb-3">
-        <Form.Control
-          type="text"
-          placeholder="Enter price"
-          name="price"
-          value={formInput.price}
-          onChange={handleChange}
-          required
-        />
-      </FloatingLabel>
-
-      {/* AUTHOR SELECT  */}
+      {/* AUTHOR SELECT
       <FloatingLabel controlId="floatingSelect" label="Author">
         <Form.Select
           aria-label="Author"
@@ -114,7 +112,7 @@ function BookForm({ obj }) {
             ))
           }
         </Form.Select>
-      </FloatingLabel>
+      </FloatingLabel> */}
 
       {/* DESCRIPTION TEXTAREA  */}
       <FloatingLabel controlId="floatingTextarea" label="Description" className="mb-3">
@@ -129,7 +127,7 @@ function BookForm({ obj }) {
         />
       </FloatingLabel>
 
-      {/* A WAY TO HANDLE UPDATES FOR TOGGLES, RADIOS, ETC  */}
+      {/* A WAY TO HANDLE UPDATES FOR TOGGLES, RADIOS, ETC
       <Form.Check
         className="text-white mb-3"
         type="switch"
@@ -143,28 +141,26 @@ function BookForm({ obj }) {
             sale: e.target.checked,
           }));
         }}
-      />
+      /> */}
 
       {/* SUBMIT BUTTON  */}
-      <Button type="submit">{obj.firebaseKey ? 'Update' : 'Create'} Book</Button>
+      <Button type="submit">{obj.firebaseKey ? 'Update' : 'Create'} Course</Button>
     </Form>
   );
 }
 
-BookForm.propTypes = {
+CourseForm.propTypes = {
   obj: PropTypes.shape({
     description: PropTypes.string,
     image: PropTypes.string,
-    price: PropTypes.string,
-    sale: PropTypes.bool,
-    title: PropTypes.string,
-    author_id: PropTypes.string,
+    name: PropTypes.string,
+    address: PropTypes.string,
     firebaseKey: PropTypes.string,
   }),
 };
 
-BookForm.defaultProps = {
+CourseForm.defaultProps = {
   obj: initialState,
 };
 
-export default BookForm;
+export default CourseForm;

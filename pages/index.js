@@ -2,36 +2,36 @@
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { Button } from 'react-bootstrap';
-import { getBooks } from '../api/bookData';
+import { getCourses } from '../api/courseData';
 import { useAuth } from '../utils/context/authContext';
-import BookCard from '../components/BookCard';
+import CourseCard from '../components/CourseCard';
 
 function Home() {
-  // TODO: Set a state for books
-  const [books, setBooks] = useState([]);
+  // TODO: Set a state for courses
+  const [courses, setCourses] = useState([]);
 
   // TODO: Get user ID using useAuth Hook
   const { user } = useAuth();
 
   // TODO: create a function that makes the API call to get all the books
-  const getAllTheBooks = () => {
-    getBooks(user.uid).then(setBooks);
+  const getAllTheCourses = () => {
+    getCourses(user.uid).then(setCourses);
   };
 
   // TODO: make the call to the API to get all the books on component render
   useEffect(() => {
-    getAllTheBooks();
+    getAllTheCourses();
   }, []);
 
   return (
     <div className="text-center my-4">
-      <Link href="/book/new" passHref>
-        <Button>Add A Courses</Button>
+      <Link href="/course/new" passHref>
+        <Button>Add A Course</Button>
       </Link>
       <div className="d-flex flex-wrap">
         {/* TODO: map over books here using BookCard component */}
-        {books.map((book) => (
-          <BookCard key={book.firebaseKey} bookObj={book} onUpdate={getAllTheBooks} />
+        {courses.map((course) => (
+          <CourseCard key={course.firebaseKey} courseObj={course} onUpdate={getAllTheCourses} />
         ))}
       </div>
 
