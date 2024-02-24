@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-import { getSingleBook } from '../../../api/bookData';
-import BookForm from '../../../components/forms/BookForm';
+import { getSingleCourse } from '../../../api/courseData';
+import CourseForm from '../../../components/forms/CourseForm';
 
-export default function EditBook() {
+export default function EditCourse() {
   const [editItem, setEditItem] = useState({});
   const router = useRouter();
   // TODO: grab the firebasekey
@@ -11,9 +11,9 @@ export default function EditBook() {
 
   // TODO: make a call to the API to get the book data
   useEffect(() => {
-    getSingleBook(firebaseKey).then(setEditItem);
+    getSingleCourse(firebaseKey).then(setEditItem);
   }, [firebaseKey]);
 
   // TODO: pass object to form
-  return (<BookForm obj={editItem} />);
+  return (<CourseForm obj={editItem} />);
 }

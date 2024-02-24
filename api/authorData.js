@@ -29,10 +29,10 @@ const getSingleAuthor = (firebaseKey) => new Promise((resolve, reject) => {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
-    }, 
+    },
   })
     .then((response) => response.json())
-    .then((data) => resolve(data)) 
+    .then((data) => resolve(data))
     .catch(reject);
 });
 
@@ -42,7 +42,7 @@ const deleteSingleAuthor = (firebaseKey) => new Promise((resolve, reject) => {
     method: 'DELETE',
     headers: {
       'Content-Type': 'application/json',
-    }, 
+    },
   })
     .then((response) => response.json())
     .then((data) => resolve(data))

@@ -1,10 +1,10 @@
 import { clientCredentials } from '../utils/client';
-// API CALLS FOR BOOKS
+// API CALLS FOR Courses
 
 const endpoint = clientCredentials.databaseURL;
 
-const getBooks = (uid) => new Promise((resolve, reject) => {
-  fetch(`${endpoint}/books.json?orderBy="uid"&equalTo="${uid}"`, {
+const getCourses = (uid) => new Promise((resolve, reject) => {
+  fetch(`${endpoint}/courses.json?orderBy="uid"&equalTo="${uid}"`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
@@ -15,66 +15,66 @@ const getBooks = (uid) => new Promise((resolve, reject) => {
     .catch(reject);
 });
 
-// TODO: DELETE BOOK
-const deleteBook = (firebaseKey) => new Promise((resolve, reject) => {
-  fetch(`${endpoint}/books/${firebaseKey}.json`, {
+// DELETE Course
+const deleteCourse = (firebaseKey) => new Promise((resolve, reject) => {
+  fetch(`${endpoint}/courses/${firebaseKey}.json`, {
     method: 'DELETE',
     headers: {
       'Content-Type': 'application/json',
-    }, 
+    },
   })
     .then((response) => response.json())
     .then((data) => resolve((data)))
     .catch(reject);
 });
 
-// TODO: GET SINGLE BOOK
-const getSingleBook = (firebaseKey) => new Promise((resolve, reject) => {
-  fetch(`${endpoint}/books/${firebaseKey}.json`, {
+// GET SINGLE Course
+const getSingleCourse = (firebaseKey) => new Promise((resolve, reject) => {
+  fetch(`${endpoint}/courses/${firebaseKey}.json`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
-    }, 
+    },
   })
     .then((response) => response.json())
     .then((data) => resolve(data))
     .catch(reject);
 });
 
-// TODO: CREATE BOOK
-const createBook = (payload) => new Promise((resolve, reject) => {
-  fetch(`${endpoint}/books.json`, {
+// CREATE Course
+const createCourse = (payload) => new Promise((resolve, reject) => {
+  fetch(`${endpoint}/courses.json`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-    }, 
-    body: JSON.stringify(payload)
+    },
+    body: JSON.stringify(payload),
   })
     .then((response) => response.json())
     .then((data) => resolve(data))
     .catch(reject);
 });
 
-// TODO: UPDATE BOOK
-const updateBook = (payload) => new Promise((resolve, reject) => {
-  fetch(`${endpoint}/books/${payload.firebaseKey}.json`, {
+//  UPDATE Course
+const updateCourse = (payload) => new Promise((resolve, reject) => {
+  fetch(`${endpoint}/courses/${payload.firebaseKey}.json`, {
     method: 'PATCH',
     headers: {
       'Content-Type': 'application/json',
-    }, 
-    body: JSON.stringify(payload)
+    },
+    body: JSON.stringify(payload),
   })
     .then((response) => response.json())
     .then((data) => resolve(data))
     .catch(reject);
 });
 
-const getBooksByAuthor = (firebaseKey) => new Promise((resolve, reject) => {
+/* const getBooksByAuthor = (firebaseKey) => new Promise((resolve, reject) => {
   fetch(`${endpoint}/books.json?orderBy="author_id"&equalTo="${firebaseKey}"`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
-    }, 
+    },
   })
     .then((response) => response.json())
     .then((data) => resolve(Object.values(data)))
@@ -94,14 +94,12 @@ const booksOnSale = (uid) => new Promise((resolve, reject) => {
       resolve(onSale);
     })
     .catch(reject);
-});
+}); */
 
 export {
-  getBooks,
-  createBook,
-  booksOnSale,
-  deleteBook,
-  getSingleBook,
-  updateBook,
-  getBooksByAuthor
+  getCourses,
+  createCourse,
+  deleteCourse,
+  getSingleCourse,
+  updateCourse,
 };

@@ -7,7 +7,7 @@ export default function Loading() {
   return (
     <div className="text-center mt-5">
       <Spinner
-        animation="border"
+        animation="grow"
         style={{
           color: '#00BF67',
           width: '100px',

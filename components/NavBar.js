@@ -4,8 +4,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Link from 'next/link';
 import {
-  Navbar, Container, Nav, Button
+  Navbar, Container, Nav, Button,
 } from 'react-bootstrap';
+
 export default function NavBar() {
   return (
     <Navbar collapseOnSelect expand="lg" bg="primary" variant="dark">
@@ -24,7 +25,7 @@ export default function NavBar() {
             <Link passHref href="/">
               <Button variant="warning">Favorites</Button>
             </Link>
-            <Link passHref href="/book/new">
+            <Link passHref href="/course/new">
               <Button variant="warning">Find A Partner</Button>
             </Link>
           </Nav>
