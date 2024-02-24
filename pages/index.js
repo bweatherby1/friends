@@ -26,7 +26,7 @@ function Home() {
   return (
     <div className="text-center my-4">
       <Link href="/book/new" passHref>
-        <Button>Add A Book</Button>
+        <Button>Add A Courses</Button>
       </Link>
       <div className="d-flex flex-wrap">
         {/* TODO: map over books here using BookCard component */}
