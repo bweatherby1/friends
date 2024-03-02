@@ -22,17 +22,10 @@ export default function ViewCourse() {
       </div>
       <div className="text-white ms-5 details">
         <h5>
-          {courseDetails.title} by {courseDetails.authorObject?.first_name} {courseDetails.authorObject?.last_name}
-          {courseDetails.authorObject?.favorite ? ' 🤍' : ''}
+          {courseDetails.name}
         </h5>
-        Author Email: <a href={`mailto:${courseDetails.authorObject?.email}`}>{courseDetails.authorObject?.email}</a>
-        <p>{courseDetails.description || ''}</p>
+        <p>{courseDetails.description}</p>
         <hr />
-        <p>
-          {courseDetails.sale
-            ? `🏷️ Sale $${courseDetails.price}`
-            : `$${courseDetails.price}`}
-        </p>
       </div>
     </div>
   );
