@@ -7,13 +7,13 @@ import { useAuth } from '../utils/context/authContext';
 import CourseCard from '../components/CourseCard';
 
 function Home() {
-  // TODO: Set a state for courses
+  // Set a state for courses
   const [courses, setCourses] = useState([]);
 
-  // TODO: Get user ID using useAuth Hook
+  // Get user ID using useAuth Hook
   const { user } = useAuth();
 
-  // TODO: create a function that makes the API call to get all the books
+  // create a function that makes the API call to get all the courses
   const getAllTheCourses = () => {
     getCourses(user.uid).then(setCourses);
   };

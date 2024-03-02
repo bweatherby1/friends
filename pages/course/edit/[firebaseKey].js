@@ -4,16 +4,21 @@ import { getSingleCourse } from '../../../api/courseData';
 import CourseForm from '../../../components/forms/CourseForm';
 
 export default function EditCourse() {
-  const [editItem, setEditItem] = useState({});
+  const [editItem, setEditItem] = useState({}); // Change from [] to {}
   const router = useRouter();
-  // TODO: grab the firebasekey
   const { firebaseKey } = router.query;
 
-  // TODO: make a call to the API to get the book data
   useEffect(() => {
-    getSingleCourse(firebaseKey).then(setEditItem);
+    if (firebaseKey) {
+      getSingleCourse(firebaseKey)
+        .then((data) => {
+          setEditItem(data);
+        })
+        .catch((error) => {
+          console.error('Error fetching course data:', error);
+        });
+    }
   }, [firebaseKey]);
 
-  // TODO: pass object to form
-  return (<CourseForm obj={editItem} />);
+  return <CourseForm obj={editItem} />;
 }

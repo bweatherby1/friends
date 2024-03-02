@@ -39,7 +39,7 @@ function CourseForm({ obj }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (obj && obj.firebaseKey) {
+    if (obj.firebaseKey) {
       updateCourse(formInput).then(() => router.push(`/course/${obj.firebaseKey}`));
     } else {
       const payload = { ...formInput, uid: user.uid };
@@ -155,10 +155,10 @@ function CourseForm({ obj }) {
 
 CourseForm.propTypes = {
   obj: PropTypes.shape({
-    description: PropTypes.string,
     image: PropTypes.string,
     name: PropTypes.string,
     address: PropTypes.string,
+    description: PropTypes.string,
     firebaseKey: PropTypes.string,
   }),
 };
