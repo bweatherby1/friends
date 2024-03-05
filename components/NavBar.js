@@ -8,26 +8,31 @@ import {
 } from 'react-bootstrap';
 import { signOut } from '../utils/auth';
 
-export default function NavBar() {
+export default function NavBar({ user }) {
   return (
     <Navbar collapseOnSelect expand="lg" bg="primary" variant="dark">
       <Container>
-        <Link passHref href="/clubby.png">
+        <Link passHref href="/profile">
           <Navbar.Brand>
             <img src="/clubby.png" alt="Logo" width="80" height="80" />
           </Navbar.Brand>
         </Link>
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
-        <Navbar.Collapse className="justify-content-end">
-          <Nav className="ml-auto">
+        <Navbar.Collapse>
+          <Nav className="mx-auto">
             <Link passHref href="/">
-              <Button variant="warning">Courses</Button>
+              <Button variant="warning" className="mx-2">Courses</Button>
             </Link>
             <Link passHref href="/">
-              <Button variant="warning">Favorites</Button>
+              <Button variant="warning" className="mx-2">Favorites</Button>
             </Link>
             <Link passHref href="/course/new">
-              <Button variant="warning">Find A Partner</Button>
+              <Button variant="warning" className="mx-2">Find A Partner</Button>
+            </Link>
+          </Nav>
+          <Nav>
+            <Link passHref href="/profile">
+              <Nav.Link><img className="profile-img" src={user.photoURL} alt={user.displayName} /></Nav.Link>
             </Link>
             <Button variant="danger" onClick={signOut}>Sign Out</Button>
           </Nav>
