@@ -5,6 +5,11 @@ body {
 }
 
 .profile-img {
-  border-radius: 50%;
-  width: 30px;
+  border-radius: 100%;
+  width: 80px;
+}
+
+.profilePage-img {
+  border-radius: 100%;
+  width: 400px;
 }
