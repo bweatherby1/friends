@@ -6,6 +6,7 @@
       "image": "https://example.com/golfer1.jpg",
       "name": "John Doe",
       "email": "john@example.com",
+      "bio": "I am Golf",
       "skillLevel": "Intermediate",
       "createdAt": "2022-03-01T10:00:00Z"
     },
@@ -15,6 +16,7 @@
       "image": "https://example.com/golfer2.jpg",
       "name": "Jane Smith",
       "email": "jane@example.com",
+      "bio": "I am Grass",
       "skillLevel": "Advanced",
       "createdAt": "2022-03-02T11:00:00Z"
     },

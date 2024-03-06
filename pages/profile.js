@@ -22,7 +22,7 @@ export default function ProfilePage() {
   // Function to handle click on time slot bubbles
   const handleTimeSlotClick = (time) => {
     // Toggle selection of time slot or perform other actions
-    console.log(`Selected time slot: ${time}`);
+    console.warn(`Selected time slot: ${time}`);
   };
 
   // Generate time slots from 6am to 5pm
@@ -45,7 +45,7 @@ export default function ProfilePage() {
           aria-label={`Select ${time}`}
         >
           {time}
-        </div>
+        </div>,
       );
     }
     return timeSlots;
