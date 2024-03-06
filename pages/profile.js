@@ -1,4 +1,6 @@
-// import React, { useState } from 'react';
+import React from 'react';
+import { Button } from 'react-bootstrap';
+import Link from 'next/link';
 import { useAuth } from '../utils/context/authContext'; // Importing auth context
 
 export default function ProfilePage() {
@@ -13,6 +15,11 @@ export default function ProfilePage() {
       <main>
         <h1>{user.displayName}</h1>
         <p><img className="profilePage-img" src={user.photoURL} alt={user.displayName} /></p>
+        <Link href={`/user/edit/${user.uid}`} passHref>
+          <div>
+            <Button variant="warning">UPDATE</Button>
+          </div>
+        </Link>
       </main>
     </div>
   );

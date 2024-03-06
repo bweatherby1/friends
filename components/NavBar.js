@@ -10,7 +10,7 @@ import { signOut } from '../utils/auth';
 
 export default function NavBar({ user }) {
   return (
-    <Navbar collapseOnSelect expand="lg" bg="primary" variant="dark">
+    <Navbar collapseOnSelect expand="lg" variant="dark" className="navbar-gradient">
       <Container>
         <Link passHref href="/profile">
           <Navbar.Brand>

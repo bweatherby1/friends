@@ -1,7 +1,7 @@
 @import 'bootstrap/dist/css/bootstrap.css';
 
 body {
-  background: linear-gradient(white, lime);
+  background: linear-gradient(to right, lightgreen, lime);
   margin: 0; /* Remove default margin */
   height: 100vh; /* Make body fill the entire viewport height */
   background-attachment: fixed; /* Ensure background gradient covers the entire viewport */
@@ -15,4 +15,8 @@ body {
 .profilePage-img {
   border-radius: 100%;
   width: 400px;
+}
+
+.navbar-gradient {
+  background: linear-gradient(to right, lightblue, blue);
 }
