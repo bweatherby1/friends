@@ -5,7 +5,6 @@ import FloatingLabel from 'react-bootstrap/FloatingLabel';
 import Form from 'react-bootstrap/Form';
 import { Button } from 'react-bootstrap';
 import { useAuth } from '../../utils/context/authContext';
-// import { getAuthors } from '../../api/authorData';
 import { createCourse, updateCourse } from '../../api/courseData';
 
 const initialState = {
