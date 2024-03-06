@@ -1,7 +1,10 @@
 @import 'bootstrap/dist/css/bootstrap.css';
 
 body {
-  background-color: rgba(0, 255, 4, 0.546);
+  background: linear-gradient(white, lime);
+  margin: 0; /* Remove default margin */
+  height: 100vh; /* Make body fill the entire viewport height */
+  background-attachment: fixed; /* Ensure background gradient covers the entire viewport */
 }
 
 .profile-img {

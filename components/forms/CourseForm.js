@@ -12,7 +12,7 @@ const initialState = {
   name: '',
   address: '',
   description: '',
-  selectedTimes: [],
+  // selectedTimes: [],
 };
 
 function CourseForm({ obj }) {
@@ -36,20 +36,20 @@ function CourseForm({ obj }) {
     }));
   };
 
-  const handleTimeChange = (e) => {
-    const { value, checked } = e.target;
-    if (checked) {
-      setFormInput((prevState) => ({
-        ...prevState,
-        selectedTimes: [...prevState.selectedTimes, value],
-      }));
-    } else {
-      setFormInput((prevState) => ({
-        ...prevState,
-        selectedTimes: prevState.selectedTimes.filter((time) => time !== value),
-      }));
-    }
-  };
+  // const handleTimeChange = (e) => {
+  //   const { value, checked } = e.target;
+  //   if (checked) {
+  //     setFormInput((prevState) => ({
+  //       ...prevState,
+  //       selectedTimes: [...prevState.selectedTimes, value],
+  //     }));
+  //   } else {
+  //     setFormInput((prevState) => ({
+  //       ...prevState,
+  //       selectedTimes: prevState.selectedTimes.filter((time) => time !== value),
+  //     }));
+  //   }
+  // };
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -66,24 +66,24 @@ function CourseForm({ obj }) {
     }
   };
 
-  const generateTimeOptions = () => {
-    const options = [];
-    let hour = 6;
-    let minute = 0;
-    while (hour <= 12) {
-      const ampm = hour < 12 ? 'AM' : 'PM'; // Determine AM/PM
-      // eslint-disable-next-line no-nested-ternary
-      const hour12 = hour === 0 ? 12 : (hour > 12 ? hour - 12 : hour); // Convert to 12-hour format
-      options.push(`${hour12.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')} ${ampm}`);
-      minute += 30;
-      if (minute === 60) {
-        // eslint-disable-next-line no-plusplus
-        hour++;
-        minute = 0;
-      }
-    }
-    return options;
-  };
+  // const generateTimeOptions = () => {
+  //   const options = [];
+  //   let hour = 6;
+  //   let minute = 0;
+  //   while (hour <= 12) {
+  //     const ampm = hour < 12 ? 'AM' : 'PM'; // Determine AM/PM
+  //     // eslint-disable-next-line no-nested-ternary
+  //     const hour12 = hour === 0 ? 12 : (hour > 12 ? hour - 12 : hour); // Convert to 12-hour format
+  //     options.push(`${hour12.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')} ${ampm}`);
+  //     minute += 30;
+  //     if (minute === 60) {
+  //       // eslint-disable-next-line no-plusplus
+  //       hour++;
+  //       minute = 0;
+  //     }
+  //   }
+  //   return options;
+  // };
 
   return (
     <Form onSubmit={handleSubmit}>
@@ -180,7 +180,7 @@ function CourseForm({ obj }) {
         }}
       /> */}
 
-      {/* Checkbox options for selecting multiple times */}
+      {/* Checkbox options for selecting multiple times
       <FloatingLabel controlId="floatingTimes" label="Select Times" className="mb-3">
         {generateTimeOptions().map((time) => (
           <Form.Check
@@ -193,7 +193,7 @@ function CourseForm({ obj }) {
             onChange={handleTimeChange}
           />
         ))}
-      </FloatingLabel>
+      </FloatingLabel> */}
 
       {/* SUBMIT BUTTON  */}
       <Button type="submit">{obj && obj.firebaseKey ? 'Update' : 'Create'} Course</Button>
@@ -207,7 +207,7 @@ CourseForm.propTypes = {
     name: PropTypes.string,
     address: PropTypes.string,
     description: PropTypes.string,
-    selectedTimes: PropTypes.arrayOf(PropTypes.string),
+    // selectedTimes: PropTypes.arrayOf(PropTypes.string),
     firebaseKey: PropTypes.string,
   }),
 };
