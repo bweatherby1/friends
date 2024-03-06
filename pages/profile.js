@@ -72,9 +72,11 @@ export default function ProfilePage() {
           <label htmlFor="skill-level">Skill Level:</label>
           <select id="skill-level" value={skillLevel} onChange={handleSkillLevelChange}>
             <option value="">Select skill level</option>
+            <option value="novice">Novice</option>
             <option value="beginner">Beginner</option>
             <option value="intermediate">Intermediate</option>
             <option value="advanced">Advanced</option>
+            <option value="club pro">Club Pro</option>
           </select>
         </div>
 
