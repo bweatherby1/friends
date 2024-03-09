@@ -87,7 +87,6 @@ function UserForm({ obj }) {
           name="name"
           value={formInput.name}
           onChange={handleChange}
-          required
           autoComplete="off"
         />
       </FloatingLabel>
@@ -100,11 +99,10 @@ function UserForm({ obj }) {
           name="image"
           value={formInput.image}
           onChange={handleChange}
-          required
         />
       </FloatingLabel>
 
-      {/* DESCRIPTION TEXTAREA  */}
+      {/* BIO TEXTAREA  */}
       <FloatingLabel controlId="floatingTextarea" label="Bio" className="mb-3">
         <Form.Control
           as="textarea"
@@ -113,7 +111,6 @@ function UserForm({ obj }) {
           name="bio"
           value={formInput.bio}
           onChange={handleChange}
-          required
         />
       </FloatingLabel>
 
@@ -159,8 +156,7 @@ UserForm.propTypes = {
   obj: PropTypes.shape({
     image: PropTypes.string,
     name: PropTypes.string,
-    address: PropTypes.string,
-    description: PropTypes.string,
+    bio: PropTypes.string,
     skillLevel: PropTypes.string,
     selectedTimes: PropTypes.arrayOf(PropTypes.string), // Update PropTypes to include selectedTimes as an array
     firebaseKey: PropTypes.string,

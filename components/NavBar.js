@@ -12,7 +12,7 @@ export default function NavBar({ user }) {
   return (
     <Navbar collapseOnSelect expand="lg" variant="dark" className="navbar-gradient">
       <Container>
-        <Link passHref href="/profile">
+        <Link passHref href={`/user/${user.firebaseKey}`}>
           <Navbar.Brand>
             <img src="/clubby.png" alt="Logo" width="80" height="80" />
           </Navbar.Brand>
@@ -46,5 +46,6 @@ NavBar.propTypes = {
   user: PropTypes.shape({
     displayName: PropTypes.string,
     photoURL: PropTypes.string,
+    firebaseKey: PropTypes.string,
   }).isRequired,
 };
