@@ -1,73 +1,84 @@
-import { clientCredentials } from '../utils/client';
-// API CALLS FOR Courses
+import { clientCredentials, firebase } from '../utils/client';
 
-const endpoint = clientCredentials.databaseURL;
+if (!firebase.apps.length) {
+  firebase.initializeApp(clientCredentials);
+}
 
-const getUsers = (uid) => new Promise((resolve, reject) => {
-  fetch(`${endpoint}/users.json?orderBy="uid"&equalTo="${uid}"`, {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-    },
+const db = firebase.firestore();
+const usersCollection = db.collection('users');
+
+// GET Users
+const getUsers = (uid) => usersCollection.where('uid', '==', uid).get()
+  .then((querySnapshot) => {
+    const users = [];
+    querySnapshot.forEach((doc) => {
+      users.push(doc.data());
+    });
+    return users;
   })
-    .then((response) => response.json())
-    .then((data) => resolve(Object.values(data)))
-    .catch(reject);
-});
+  .catch((error) => {
+    console.error('Error getting users:', error);
+    throw error;
+  });
 
-// DELETE Course
-const deleteUser = (firebaseKey) => new Promise((resolve, reject) => {
-  fetch(`${endpoint}/users/${firebaseKey}.json`, {
-    method: 'DELETE',
-    headers: {
-      'Content-Type': 'application/json',
-    },
+// DELETE User
+const deleteUser = (firebaseKey) => usersCollection.doc(firebaseKey).delete()
+  .then(() => {
+    console.warn('User successfully deleted');
   })
-    .then((response) => response.json())
-    .then((data) => resolve((data)))
-    .catch(reject);
-});
+  .catch((error) => {
+    console.error('Error deleting user:', error);
+    throw error;
+  });
 
-// GET SINGLE Course
-const getSingleUser = (firebaseKey) => new Promise((resolve, reject) => {
-  fetch(`${endpoint}/users/${firebaseKey}.json`, {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-    },
+// GET SINGLE User
+const getSingleUser = (firebaseKey) => usersCollection.doc(firebaseKey).get()
+  .then((doc) => {
+    if (doc.exists) {
+      return doc.data();
+    }
+    console.warn('No such user document!');
+    return null;
   })
-    .then((response) => response.json())
-    .then((data) => resolve(data))
-    .catch(reject);
-});
+  .catch((error) => {
+    console.error('Error getting user:', error);
+    throw error;
+  });
 
-// CREATE Course
-const createUser = (payload) => new Promise((resolve, reject) => {
-  fetch(`${endpoint}/users.json`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(payload),
+// CREATE User
+const createUser = (payload) => usersCollection.add(payload)
+  .then((docRef) => {
+    console.warn('User document written with ID: ', docRef.id);
+    return docRef.id;
   })
-    .then((response) => response.json())
-    .then((data) => resolve(data))
-    .catch(reject);
-});
+  .catch((error) => {
+    console.error('Error adding user:', error);
+    throw error;
+  });
 
-//  UPDATE Course
-const updateUser = (payload) => new Promise((resolve, reject) => {
-  fetch(`${endpoint}/users/${payload.firebaseKey}.json`, {
-    method: 'PATCH',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(payload),
+// UPDATE User
+const updateUser = (userId, userData) => usersCollection.doc(userId).update(userData)
+  .then(() => {
+    console.warn('User document successfully updated');
   })
-    .then((response) => response.json())
-    .then((data) => resolve(data))
-    .catch(reject);
-});
+  .catch((error) => {
+    console.error('Error updating user:', error);
+    throw error;
+  });
+
+// GET User Data
+const getUserData = (uid) => usersCollection.where('uid', '==', uid).get()
+  .then((querySnapshot) => {
+    if (!querySnapshot.empty) {
+      return querySnapshot.docs[0].data();
+    }
+    console.warn('No user data found for the given UID:', uid);
+    return null;
+  })
+  .catch((error) => {
+    console.error('Error getting user data:', error);
+    throw error;
+  });
 
 export {
   getUsers,
@@ -75,4 +86,5 @@ export {
   deleteUser,
   getSingleUser,
   updateUser,
+  getUserData,
 };
