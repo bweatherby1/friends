@@ -6,19 +6,19 @@ import UserForm from '../../../components/forms/UserForm';
 export default function EditUser() {
   const [editItem, setEditItem] = useState({}); // Change from [] to {}
   const router = useRouter();
-  const { firebaseKey } = router.query;
+  const { uid } = router.query;
 
   useEffect(() => {
-    if (firebaseKey) {
-      getSingleUser(firebaseKey)
+    if (uid) {
+      getSingleUser(uid)
         .then((data) => {
           setEditItem(data);
         })
         .catch((error) => {
-          console.error('Error fetching course data:', error);
+          console.error('Error fetching user data:', error);
         });
     }
-  }, [firebaseKey]);
+  }, [uid]);
 
   return <UserForm obj={editItem} />;
 }

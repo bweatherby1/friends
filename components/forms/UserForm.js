@@ -30,7 +30,7 @@ function UserForm({ obj }) {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    // If it's the skillLevel or name, handle as before
+    // If it's the skillLevel, name, bio, or image, handle as before
     if (name === 'skillLevel' || name === 'name' || name === 'bio' || name === 'image') {
       setFormInput((prevState) => ({
         ...prevState,
@@ -48,14 +48,10 @@ function UserForm({ obj }) {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (obj && obj.firebaseKey) {
-      updateUser(formInput).then(() => router.push(`/user/${obj.firebaseKey}`));
+      updateUser(obj.firebaseKey, formInput).then(() => router.push(`/user/${obj.firebaseKey}`));
     } else {
-      const payload = { ...formInput, uid: user.uid };
-      createUser(payload).then(({ name }) => {
-        const patchPayload = { firebaseKey: name };
-        updateUser(patchPayload).then(() => {
-          router.push('/');
-        });
+      createUser({ ...formInput, uid: user.uid }).then(() => {
+        router.push('/');
       });
     }
   };
