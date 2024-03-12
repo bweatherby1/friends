@@ -1,7 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-import viewCourseDetails from '../../api/mergedData';
+import { viewCourseDetails } from '../../api/mergedData';
 
 export default function ViewCourse() {
   const [courseDetails, setCourseDetails] = useState({});
@@ -26,7 +26,6 @@ export default function ViewCourse() {
         </h5>
         <p>{courseDetails.description}</p>
         <hr />
-        <p>{courseDetails.selectedTimes}</p>
       </div>
     </div>
   );
