@@ -1,19 +1,35 @@
-/* eslint-disable @next/next/no-img-element */
-/* eslint-disable jsx-a11y/anchor-is-valid */
-import React from 'react';
-import PropTypes from 'prop-types';
+import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import {
   Navbar, Container, Nav, Button,
 } from 'react-bootstrap';
 import { signOut } from '../utils/auth';
+import { useAuth } from '../utils/context/authContext'; // Importing auth context
+import { getUserData } from '../api/userData'; // Importing function to fetch user data
 
-export default function NavBar({ user }) {
+export default function NavBar() {
+  const { user } = useAuth(); // Using useAuth hook to get user data
+  const [userData, setUserData] = useState(null);
+
+  useEffect(() => {
+    if (user) {
+      // Fetch user data from Firestore
+      getUserData(user.uid)
+        .then((data) => {
+          setUserData(data);
+        })
+        .catch((error) => {
+          console.error('Error fetching user data:', error);
+        });
+    }
+  }, [user]);
+
   return (
     <Navbar collapseOnSelect expand="lg" variant="dark" className="navbar-gradient">
       <Container>
-        <Link passHref href={`/user/${user.firebaseKey}`}>
+        <Link passHref href="/profile">
           <Navbar.Brand>
+            {/* eslint-disable-next-line @next/next/no-img-element, @next/next/no-img-element */}
             <img src="/clubby.png" alt="Logo" width="80" height="80" />
           </Navbar.Brand>
         </Link>
@@ -31,9 +47,14 @@ export default function NavBar({ user }) {
             </Link>
           </Nav>
           <Nav>
-            <Link passHref href="/profile">
-              <Nav.Link><img className="profile-img" src={user.photoURL} alt={user.displayName} /></Nav.Link>
-            </Link>
+            {userData && (
+              <Link passHref href="/profile">
+                <Nav.Link>
+                  {/* eslint-disable-next-line @next/next/no-img-element, @next/next/no-img-element */}
+                  <img className="profile-img" src={userData.image} alt={userData.name} />
+                </Nav.Link>
+              </Link>
+            )}
             <Button variant="danger" onClick={signOut}>Sign Out</Button>
           </Nav>
         </Navbar.Collapse>
@@ -41,11 +62,3 @@ export default function NavBar({ user }) {
     </Navbar>
   );
 }
-
-NavBar.propTypes = {
-  user: PropTypes.shape({
-    displayName: PropTypes.string,
-    photoURL: PropTypes.string,
-    firebaseKey: PropTypes.string,
-  }).isRequired,
-};
