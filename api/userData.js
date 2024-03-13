@@ -32,7 +32,7 @@ const deleteUser = (firebaseKey) => usersCollection.doc(firebaseKey).delete()
   });
 
 // GET SINGLE User
-const getSingleUser = (firebaseKey) => usersCollection.doc(firebaseKey).get()
+const getSingleUser = (uid) => usersCollection.doc(uid).get()
   .then((doc) => {
     if (doc.exists) {
       return doc.data();
@@ -57,7 +57,7 @@ const createUser = (payload) => usersCollection.add(payload)
   });
 
 // UPDATE User
-const updateUser = (userId, userData) => usersCollection.doc(userId).update(userData)
+const updateUser = (uid, userData) => usersCollection.doc(uid).update(userData)
   .then(() => {
     console.warn('User document successfully updated');
   })

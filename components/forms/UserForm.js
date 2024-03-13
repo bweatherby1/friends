@@ -12,7 +12,7 @@ const initialState = {
   name: '',
   bio: '',
   skillLevel: '',
-  selectedTimes: [], // Change to array for multiple times
+  selectedTimes: [], // Ensure selectedTimes is initialized as an array
 };
 
 function UserForm({ obj }) {
@@ -21,7 +21,7 @@ function UserForm({ obj }) {
   const { user } = useAuth();
 
   useEffect(() => {
-    if (obj && obj.firebaseKey) {
+    if (obj) {
       setFormInput(obj);
     } else {
       setFormInput(initialState);
@@ -30,28 +30,27 @@ function UserForm({ obj }) {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    // If it's the skillLevel, name, bio, or image, handle as before
     if (name === 'skillLevel' || name === 'name' || name === 'bio' || name === 'image') {
       setFormInput((prevState) => ({
         ...prevState,
         [name]: value,
       }));
-    } else { // Otherwise, it's a multiple selection, handle accordingly
+    } else {
       const selectedTimes = Array.from(e.target.selectedOptions, (option) => option.value);
       setFormInput((prevState) => ({
         ...prevState,
-        selectedTimes, // Using property shorthand
+        selectedTimes: selectedTimes || [], // Ensure selectedTimes is always an array
       }));
     }
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (obj && obj.firebaseKey) {
-      updateUser(obj.firebaseKey, formInput).then(() => router.push(`/user/${obj.firebaseKey}`));
+    if (obj && obj.uid) {
+      updateUser(obj.uid, formInput).then(() => router.push('/profile'));
     } else {
       createUser({ ...formInput, uid: user.uid }).then(() => {
-        router.push('/');
+        router.push('/profile');
       });
     }
   };
@@ -73,48 +72,44 @@ function UserForm({ obj }) {
 
   return (
     <Form onSubmit={handleSubmit}>
-      <h2 className="text-white mt-5">{obj && obj.firebaseKey ? 'Update' : 'Create'} Course</h2>
+      <h2 className="text-white mt-5">{obj && obj.uid ? 'Update' : 'Create'} Course</h2>
 
-      {/* Name INPUT  */}
       <FloatingLabel controlId="floatingInput1" label="Your Name" className="mb-3">
         <Form.Control
           type="text"
           placeholder="Enter Name"
           name="name"
-          value={formInput.name}
+          value={formInput.name || ''} // Ensure value is not undefined
           onChange={handleChange}
           autoComplete="off"
         />
       </FloatingLabel>
 
-      {/* IMAGE INPUT  */}
       <FloatingLabel controlId="floatingInput2" label="Profile Pic" className="mb-3">
         <Form.Control
           type="url"
           placeholder="Enter an image url"
           name="image"
-          value={formInput.image}
+          value={formInput.image || ''} // Ensure value is not undefined
           onChange={handleChange}
         />
       </FloatingLabel>
 
-      {/* BIO TEXTAREA  */}
       <FloatingLabel controlId="floatingTextarea" label="Bio" className="mb-3">
         <Form.Control
           as="textarea"
           placeholder="Bio"
           style={{ height: '100px' }}
           name="bio"
-          value={formInput.bio}
+          value={formInput.bio || ''} // Ensure value is not undefined
           onChange={handleChange}
         />
       </FloatingLabel>
 
-      {/* SKILL LEVEL DROPDOWN */}
       <FloatingLabel controlId="skillLevel" label="Skill Level" className="mb-3">
         <Form.Select
           name="skillLevel"
-          value={formInput.skillLevel}
+          value={formInput.skillLevel || ''} // Ensure value is not undefined
           onChange={handleChange}
           required
         >
@@ -129,21 +124,19 @@ function UserForm({ obj }) {
         </Form.Select>
       </FloatingLabel>
 
-      {/* TIME SELECT BOX */}
       <FloatingLabel controlId="selectedTime" label="Select Time" className="mb-3">
         <Form.Select
           name="selectedTime"
-          value={formInput.selectedTimes} // Set value to an array of selectedTimes
+          value={formInput.selectedTimes || []} // Ensure value is not undefined
           onChange={handleChange}
           required
-          multiple // Allow multiple selections
+          multiple
         >
           {generateTimeOptions()}
         </Form.Select>
       </FloatingLabel>
 
-      {/* SUBMIT BUTTON  */}
-      <Button type="submit">{obj && obj.firebaseKey ? 'Update' : 'Create'} Golfer</Button>
+      <Button type="submit">{obj && obj.uid ? 'Update' : 'Create'} Golfer</Button>
     </Form>
   );
 }
@@ -154,8 +147,8 @@ UserForm.propTypes = {
     name: PropTypes.string,
     bio: PropTypes.string,
     skillLevel: PropTypes.string,
-    selectedTimes: PropTypes.arrayOf(PropTypes.string), // Update PropTypes to include selectedTimes as an array
-    firebaseKey: PropTypes.string,
+    selectedTimes: PropTypes.arrayOf(PropTypes.string),
+    uid: PropTypes.string,
   }),
 };
 

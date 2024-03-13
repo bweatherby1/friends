@@ -39,7 +39,7 @@ export default function ProfilePage() {
         {userData.selectedTimes && Array.isArray(userData.selectedTimes) && (
           <p>Selected Times: {userData.selectedTimes.join(', ')}</p>
         )}
-        <Link href="/user/edit/edit" passHref>
+        <Link href={`/user/edit/edit?uid=${user.uid}`} passHref>
           <div>
             <Button variant="warning">UPDATE</Button>
           </div>
