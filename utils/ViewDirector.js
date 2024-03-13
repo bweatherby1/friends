@@ -1,22 +1,57 @@
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { useAuth } from './context/authContext';
 import Loading from '../components/Loading';
 import Signin from '../components/Signin';
 import NavBar from '../components/NavBar';
+import UserForm from '../components/forms/UserForm'; // Import UserForm component
+import { getUserData } from '../api/userData';
 
 const ViewDirectorBasedOnUserAuthStatus = ({ component: Component, pageProps }) => {
   const { user, userLoading } = useAuth();
+  const [userDataLoading, setUserDataLoading] = useState(true);
+  const [userHasData, setUserHasData] = useState(false);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      if (user) {
+        try {
+          const userData = await getUserData(user.uid); // Fetch user data based on user ID
+          setUserHasData(userData !== null); // Check if user data exists
+        } catch (error) {
+          console.error('Error fetching user data:', error);
+        } finally {
+          setUserDataLoading(false);
+        }
+      }
+    };
+
+    fetchData();
+  }, [user]);
 
   // if user state is null, then show loader
-  if (userLoading) {
+  if (userLoading || userDataLoading) {
     return <Loading />;
   }
 
-  // what the user should see if they are logged in
+  // If user is authenticated
   if (user) {
+    // If user has no data in Firestore, show UserForm
+    if (!userHasData) {
+      return (
+        <>
+          <NavBar user={user} /> {/* NavBar only visible if user is logged in and is in every view */}
+          <div className="container">
+            <UserForm user={user} />
+          </div>
+        </>
+      );
+    }
+
+    // User has data in Firestore, show the component
     return (
       <>
-        <NavBar user={user} /> {/* NavBar only visible if user is logged in and is in every view */}
+        <NavBar user={user} />
         <div className="container">
           <Component {...pageProps} />
         </div>
@@ -24,6 +59,7 @@ const ViewDirectorBasedOnUserAuthStatus = ({ component: Component, pageProps }) 
     );
   }
 
+  // User is not authenticated, show Signin component
   return <Signin />;
 };
 
