@@ -23,13 +23,16 @@ const ViewDirectorBasedOnUserAuthStatus = ({ component: Component, pageProps }) 
         } finally {
           setUserDataLoading(false);
         }
+      } else {
+        // If user is null, set userDataLoading to false to stop loading
+        setUserDataLoading(false);
       }
     };
 
     fetchData();
   }, [user]);
 
-  // if user state is null, then show loader
+  // if user state is null or user is still loading, then show loader
   if (userLoading || userDataLoading) {
     return <Loading />;
   }
@@ -59,7 +62,7 @@ const ViewDirectorBasedOnUserAuthStatus = ({ component: Component, pageProps }) 
     );
   }
 
-  // User is not authenticated, show Signin component
+  // User is not authenticated, redirect to Signin page
   return <Signin />;
 };
 

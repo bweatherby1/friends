@@ -1,13 +1,9 @@
-import { clientCredentials, firebase } from '../utils/client';
-
-if (!firebase.apps.length) {
-  firebase.initializeApp(clientCredentials);
-}
+import { firebase } from '../utils/client';
 
 const db = firebase.firestore();
 const usersCollection = db.collection('users');
 
-// GET Users
+// Function to get users from Firestore based on UID
 const getUsers = (uid) => usersCollection.where('uid', '==', uid).get()
   .then((querySnapshot) => {
     const users = [];
@@ -21,7 +17,7 @@ const getUsers = (uid) => usersCollection.where('uid', '==', uid).get()
     throw error;
   });
 
-// DELETE User
+// Function to delete a user document from Firestore
 const deleteUser = (firebaseKey) => usersCollection.doc(firebaseKey).delete()
   .then(() => {
     console.warn('User successfully deleted');
@@ -31,7 +27,7 @@ const deleteUser = (firebaseKey) => usersCollection.doc(firebaseKey).delete()
     throw error;
   });
 
-// GET SINGLE User
+// Function to get a single user document from Firestore based on UID
 const getSingleUser = (uid) => usersCollection.doc(uid).get()
   .then((doc) => {
     if (doc.exists) {
@@ -45,18 +41,27 @@ const getSingleUser = (uid) => usersCollection.doc(uid).get()
     throw error;
   });
 
-// CREATE User
-const createUser = (payload) => usersCollection.add(payload)
-  .then((docRef) => {
-    console.warn('User document written with ID: ', docRef.id);
-    return docRef.id;
-  })
-  .catch((error) => {
+// Function to create a user document in Firestore
+const createUser = async (userData) => {
+  try {
+    // Get the Firebase user ID
+    const userId = firebase.auth().currentUser.uid;
+
+    // Set the user data in the 'users' collection with the Firebase user ID as the document ID
+    await usersCollection.doc(userId).set({
+      ...userData,
+      uid: userId, // Assigning the Firebase user ID as the uid field in the document
+    });
+
+    // Return the UID as confirmation
+    return userId;
+  } catch (error) {
     console.error('Error adding user:', error);
     throw error;
-  });
+  }
+};
 
-// UPDATE User
+// Function to update a user document in Firestore
 const updateUser = (uid, userData) => usersCollection.doc(uid).update(userData)
   .then(() => {
     console.warn('User document successfully updated');
@@ -66,7 +71,7 @@ const updateUser = (uid, userData) => usersCollection.doc(uid).update(userData)
     throw error;
   });
 
-// GET User Data
+// Function to get user data from Firestore based on UID
 const getUserData = (uid) => usersCollection.where('uid', '==', uid).get()
   .then((querySnapshot) => {
     if (!querySnapshot.empty) {
