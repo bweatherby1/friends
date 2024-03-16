@@ -4,7 +4,7 @@ import { getSingleCourse } from '../../../api/courseData';
 import CourseForm from '../../../components/forms/CourseForm';
 
 export default function EditCourse() {
-  const [editItem, setEditItem] = useState({}); // Change from [] to {}
+  const [editItem, setEditItem] = useState({});
   const router = useRouter();
   const { firebaseKey } = router.query;
 
