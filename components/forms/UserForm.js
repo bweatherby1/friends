@@ -15,7 +15,7 @@ const initialState = {
   selectedTimes: [], // Ensure selectedTimes is initialized as an array
 };
 
-function UserForm({ obj }) {
+function UserForm({ obj, uid }) {
   const [formInput, setFormInput] = useState(initialState);
   const router = useRouter();
   const { user } = useAuth();
@@ -27,6 +27,15 @@ function UserForm({ obj }) {
       setFormInput(initialState);
     }
   }, [obj]);
+
+  useEffect(() => {
+    if (uid && user) {
+      setFormInput((prevState) => ({
+        ...prevState,
+        uid, // Set the uid to the value passed as prop
+      }));
+    }
+  }, [uid, user]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -49,7 +58,7 @@ function UserForm({ obj }) {
     if (obj && obj.uid) {
       updateUser(obj.uid, formInput).then(() => router.push('/profile'));
     } else {
-      createUser({ ...formInput, uid: user.uid }).then(() => {
+      createUser(formInput).then(() => {
         router.push('/profile');
       });
     }
@@ -150,6 +159,7 @@ UserForm.propTypes = {
     selectedTimes: PropTypes.arrayOf(PropTypes.string),
     uid: PropTypes.string,
   }),
+  uid: PropTypes.string.isRequired, // Ensure uid is required as a prop
 };
 
 UserForm.defaultProps = {
