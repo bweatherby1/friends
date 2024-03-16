@@ -7,7 +7,6 @@ export default function EditUser() {
   const [editItem, setEditItem] = useState({});
   const router = useRouter();
 
-  // Log the entire router object to understand why router.query is empty
   useEffect(() => {
   }, [router]);
 
