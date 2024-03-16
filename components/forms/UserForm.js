@@ -12,7 +12,7 @@ const initialState = {
   name: '',
   bio: '',
   skillLevel: '',
-  selectedTimes: [], // Ensure selectedTimes is initialized as an array
+  selectedTimes: [],
 };
 
 function UserForm({ obj, uid }) {
@@ -32,7 +32,7 @@ function UserForm({ obj, uid }) {
     if (uid && user) {
       setFormInput((prevState) => ({
         ...prevState,
-        uid, // Set the uid to the value passed as prop
+        uid,
       }));
     }
   }, [uid, user]);
@@ -48,7 +48,7 @@ function UserForm({ obj, uid }) {
       const selectedTimes = Array.from(e.target.selectedOptions, (option) => option.value);
       setFormInput((prevState) => ({
         ...prevState,
-        selectedTimes: selectedTimes || [], // Ensure selectedTimes is always an array
+        selectedTimes: selectedTimes || [],
       }));
     }
   };
@@ -159,7 +159,7 @@ UserForm.propTypes = {
     selectedTimes: PropTypes.arrayOf(PropTypes.string),
     uid: PropTypes.string,
   }),
-  uid: PropTypes.string.isRequired, // Ensure uid is required as a prop
+  uid: PropTypes.string.isRequired,
 };
 
 UserForm.defaultProps = {

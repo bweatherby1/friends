@@ -7,18 +7,13 @@ import { useAuth } from '../utils/context/authContext';
 import CourseCard from '../components/CourseCard';
 
 function Home() {
-  // Set a state for courses
   const [courses, setCourses] = useState([]);
-
-  // Get user ID using useAuth Hook
   const { user } = useAuth();
 
-  // create a function that makes the API call to get all the courses
   const getAllTheCourses = () => {
     getCourses(user.uid).then(setCourses);
   };
 
-  // TODO: make the call to the API to get all the books on component render
   useEffect(() => {
     getAllTheCourses();
   }, []);
@@ -29,7 +24,6 @@ function Home() {
         <Button className="addCourse">Add A Course</Button>
       </Link>
       <div className="d-flex flex-wrap">
-        {/* TODO: map over books here using BookCard component */}
         {courses.map((course) => (
           <CourseCard key={course.firebaseKey} courseObj={course} onUpdate={getAllTheCourses} />
         ))}

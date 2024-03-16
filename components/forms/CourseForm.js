@@ -89,7 +89,6 @@ function CourseForm({ obj }) {
     <Form onSubmit={handleSubmit}>
       <h2 className="text-white mt-5">{obj && obj.firebaseKey ? 'Update' : 'Create'} Course</h2>
 
-      {/* Name INPUT  */}
       <FloatingLabel controlId="floatingInput1" label="Course Name" className="mb-3 1">
         <Form.Control
           type="text"
@@ -102,7 +101,6 @@ function CourseForm({ obj }) {
         />
       </FloatingLabel>
 
-      {/* Address INPUT  */}
       <FloatingLabel controlId="floatingInput3" label="Course Address" className="mb-3 2">
         <Form.Control
           type="text"
@@ -115,7 +113,6 @@ function CourseForm({ obj }) {
         />
       </FloatingLabel>
 
-      {/* IMAGE INPUT  */}
       <FloatingLabel controlId="floatingInput2" label="Course Image" className="mb-3 3">
         <Form.Control
           type="url"
@@ -127,31 +124,6 @@ function CourseForm({ obj }) {
         />
       </FloatingLabel>
 
-      {/* AUTHOR SELECT
-      <FloatingLabel controlId="floatingSelect" label="Author">
-        <Form.Select
-          aria-label="Author"
-          name="author_id"
-          onChange={handleChange}
-          className="mb-3"
-          value={obj.author_id} // FIXME: modify code to remove error
-          required
-        >
-          <option value="">Select an Author</option>
-          {
-            authors.map((author) => (
-              <option
-                key={author.firebaseKey}
-                value={author.firebaseKey}
-              >
-                {author.first_name} {author.last_name}
-              </option>
-            ))
-          }
-        </Form.Select>
-      </FloatingLabel> */}
-
-      {/* DESCRIPTION TEXTAREA  */}
       <FloatingLabel controlId="floatingTextarea" label="Description" className="mb-3">
         <Form.Control
           as="textarea"
@@ -164,38 +136,6 @@ function CourseForm({ obj }) {
         />
       </FloatingLabel>
 
-      {/* A WAY TO HANDLE UPDATES FOR TOGGLES, RADIOS, ETC
-      <Form.Check
-        className="text-white mb-3"
-        type="switch"
-        id="sale"
-        name="sale"
-        label="On Sale?"
-        checked={formInput.sale}
-        onChange={(e) => {
-          setFormInput((prevState) => ({
-            ...prevState,
-            sale: e.target.checked,
-          }));
-        }}
-      /> */}
-
-      {/* Checkbox options for selecting multiple times
-      <FloatingLabel controlId="floatingTimes" label="Select Times" className="mb-3">
-        {generateTimeOptions().map((time) => (
-          <Form.Check
-            key={time}
-            type="checkbox"
-            id={time}
-            label={time}
-            value={time}
-            checked={formInput.selectedTimes.includes(time)}
-            onChange={handleTimeChange}
-          />
-        ))}
-      </FloatingLabel> */}
-
-      {/* SUBMIT BUTTON  */}
       <Button type="submit">{obj && obj.firebaseKey ? 'Update' : 'Create'} Course</Button>
     </Form>
   );

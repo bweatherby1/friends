@@ -13,7 +13,6 @@ export default function NavBar() {
 
   useEffect(() => {
     if (user) {
-      // Fetch user data from Firestore
       getUserData(user.uid)
         .then((data) => {
           setUserData(data);
