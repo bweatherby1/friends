@@ -18,6 +18,10 @@ function Home() {
     getAllTheCourses();
   }, []);
 
+  const handleUpdate = () => {
+    getAllTheCourses();
+  };
+
   return (
     <div className="text-center my-4">
       <Link href="/course/new" passHref>
@@ -25,10 +29,13 @@ function Home() {
       </Link>
       <div className="d-flex flex-wrap">
         {courses.map((course) => (
-          <CourseCard key={course.firebaseKey} courseObj={course} onUpdate={getAllTheCourses} />
+          <CourseCard
+            key={course.firebaseKey}
+            courseObj={course}
+            onUpdate={handleUpdate}
+          />
         ))}
       </div>
-
     </div>
   );
 }

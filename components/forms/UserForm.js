@@ -81,14 +81,14 @@ function UserForm({ obj, uid }) {
 
   return (
     <Form onSubmit={handleSubmit}>
-      <h2 className="text-white mt-5">{obj && obj.uid ? 'Update' : 'Create'} Course</h2>
+      <h2 className="text-white mt-5">{obj && obj.uid ? 'Update' : 'Create'} Your Profile!</h2>
 
       <FloatingLabel controlId="floatingInput1" label="Your Name" className="mb-3">
         <Form.Control
           type="text"
           placeholder="Enter Name"
           name="name"
-          value={formInput.name || ''} // Ensure value is not undefined
+          value={formInput.name || ''}
           onChange={handleChange}
           autoComplete="off"
         />
@@ -110,7 +110,7 @@ function UserForm({ obj, uid }) {
           placeholder="Bio"
           style={{ height: '100px' }}
           name="bio"
-          value={formInput.bio || ''} // Ensure value is not undefined
+          value={formInput.bio || ''}
           onChange={handleChange}
         />
       </FloatingLabel>
@@ -118,7 +118,7 @@ function UserForm({ obj, uid }) {
       <FloatingLabel controlId="skillLevel" label="Skill Level" className="mb-3">
         <Form.Select
           name="skillLevel"
-          value={formInput.skillLevel || ''} // Ensure value is not undefined
+          value={formInput.skillLevel || ''}
           onChange={handleChange}
           required
         >
@@ -145,7 +145,7 @@ function UserForm({ obj, uid }) {
         </Form.Select>
       </FloatingLabel>
 
-      <Button type="submit">{obj && obj.uid ? 'Update' : 'Create'} Golfer</Button>
+      <Button type="submit">{obj && obj.uid ? 'Update' : 'Create'} Profile</Button>
     </Form>
   );
 }
@@ -159,11 +159,12 @@ UserForm.propTypes = {
     selectedTimes: PropTypes.arrayOf(PropTypes.string),
     uid: PropTypes.string,
   }),
-  uid: PropTypes.string.isRequired,
+  uid: PropTypes.string,
 };
 
 UserForm.defaultProps = {
   obj: initialState,
+  uid: '',
 };
 
 export default UserForm;

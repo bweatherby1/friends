@@ -3,7 +3,7 @@ import { firebase } from '../utils/client';
 const db = firebase.firestore();
 const usersCollection = db.collection('users');
 
-const getUsers = (uid) => usersCollection.where('uid', '==', uid).get()
+const getUsers = () => usersCollection.get()
   .then((querySnapshot) => {
     const users = [];
     querySnapshot.forEach((doc) => {
