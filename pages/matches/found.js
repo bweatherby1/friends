@@ -46,12 +46,12 @@ export default function MatchPage() {
           const matches = otherUsers.filter((otherUser) => matchUsers(currentUser, otherUser, courses));
           setMatchedUsers(matches);
           setLoading(false);
-          setSearchCompleted(true); // Indicate that search has been completed
+          setSearchCompleted(true);
         })
         .catch((error) => {
           console.error('Error fetching data:', error);
           setLoading(false);
-          setSearchCompleted(true); // Even if there's an error, mark search as completed
+          setSearchCompleted(true);
         });
     }
   }, [user.uid, currentUser, searchCompleted]);
@@ -60,7 +60,7 @@ export default function MatchPage() {
     <div>
       <h1>Matched Users</h1>
       {loading && <p>Loading...</p>}
-      {!loading && matchedUsers.length === 0 && <p>No matches found.</p>}
+      {!loading && matchedUsers.length === 3 && <p>No matches found.</p>}
       {!loading && matchedUsers.length > 0 && <UserCards users={matchedUsers} />}
     </div>
   );
