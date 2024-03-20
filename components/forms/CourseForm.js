@@ -8,6 +8,7 @@ import { useAuth } from '../../utils/context/authContext';
 import { createCourse, updateCourse } from '../../api/courseData';
 
 const initialState = {
+  courseId: '', // Use firebaseKey as courseId
   image: '',
   name: '',
   address: '',
@@ -23,7 +24,10 @@ function CourseForm({ obj }) {
     if (obj && obj.firebaseKey) {
       setFormInput(obj);
     } else {
-      setFormInput(initialState);
+      setFormInput({
+        ...initialState,
+        courseId: '', // Leave courseId empty for new course, as firebaseKey will be used
+      });
     }
   }, [obj]);
 
@@ -42,7 +46,7 @@ function CourseForm({ obj }) {
     } else {
       const payload = { ...formInput, uid: user.uid };
       createCourse(payload).then(({ name }) => {
-        const patchPayload = { firebaseKey: name };
+        const patchPayload = { ...payload, firebaseKey: name, courseId: name }; // Use firebaseKey as courseId for new course
         updateCourse(patchPayload).then(() => {
           router.push('/');
         });
@@ -108,6 +112,7 @@ function CourseForm({ obj }) {
 
 CourseForm.propTypes = {
   obj: PropTypes.shape({
+    courseId: PropTypes.string,
     image: PropTypes.string,
     name: PropTypes.string,
     address: PropTypes.string,
