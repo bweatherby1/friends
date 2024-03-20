@@ -1,27 +1,30 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import Link from 'next/link';
 import { deleteCourse, updateCourse } from '../api/courseData';
-import { useAuth } from '../utils/context/authContext'; // Import the auth context or hook
+import { useAuth } from '../utils/context/authContext';
 
 function CourseCard({ courseObj, onUpdate }) {
   const { user } = useAuth(); // Retrieve the current user
-  const [cardColor, setCardColor] = useState('lightblue'); // Set initial color to lightblue
+  const [cardColor, setCardColor] = useState('lightblue');
+  const cardRef = useRef(null);
 
   useEffect(() => {
-    // Fetch the color associated with the current user's UID
     if (user && user.uid) {
       const userColor = courseObj.color && courseObj.color[user.uid];
-      setCardColor(userColor || 'lightblue'); // If user hasn't chosen a color, default to lightblue
+      setCardColor(userColor || 'lightblue');
     }
   }, [user, courseObj]);
 
-  const handleCardClick = () => {
-    const newColor = cardColor === 'lightblue' ? 'red' : 'lightblue';
-    setCardColor(newColor);
-    updateCourse({ ...courseObj, color: { ...courseObj.color, [user.uid]: newColor } });
+  const handleCardClick = (event) => {
+    // Check if the clicked element is the card image
+    if (event.target.tagName === 'IMG' && event.currentTarget === cardRef.current) {
+      const newColor = cardColor === 'lightblue' ? 'red' : 'lightblue';
+      setCardColor(newColor);
+      updateCourse({ ...courseObj, color: { ...courseObj.color, [user.uid]: newColor } });
+    }
   };
 
   const deleteThisCourse = () => {
@@ -32,9 +35,10 @@ function CourseCard({ courseObj, onUpdate }) {
 
   return (
     <Card
+      ref={cardRef} // Set the ref to the card component
       key={courseObj.firebaseKey}
-      style={{ width: '18rem', margin: '10px', backgroundColor: cardColor }} // Set background color dynamically
-      onClick={handleCardClick} // Handle click event
+      style={{ width: '18rem', margin: '10px', backgroundColor: cardColor }}
+      onClick={handleCardClick}
     >
       <Card.Img variant="top" src={courseObj.image} alt={courseObj.name} style={{ height: '300px' }} />
       <Card.Body>
@@ -62,7 +66,7 @@ CourseCard.propTypes = {
     name: PropTypes.string,
     address: PropTypes.string,
     firebaseKey: PropTypes.string,
-    color: PropTypes.objectOf(PropTypes.string), // Color is an object containing user IDs and their chosen colors
+    color: PropTypes.objectOf(PropTypes.string),
   }).isRequired,
   onUpdate: PropTypes.func.isRequired,
 };

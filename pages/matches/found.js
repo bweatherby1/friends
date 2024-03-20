@@ -2,42 +2,56 @@ import React, { useState, useEffect } from 'react';
 import { getSingleUser, getUsers } from '../../api/userData';
 import { useAuth } from '../../utils/context/authContext';
 import UserCards from '../../components/UserCards';
+import { getCourses } from '../../api/courseData';
 
 export default function MatchPage() {
-  const { user } = useAuth(); // Retrieve the current user
-  const [currentUser, setCurrentUser] = useState(null); // State to store current user
+  const { user } = useAuth();
+  const [currentUser, setCurrentUser] = useState(null);
   const [matchedUsers, setMatchedUsers] = useState([]);
   const [loading, setLoading] = useState(true);
-
-  const matchUsers = (user1, user2) => {
-    if (!user1 || !user2) {
-      return false; // Return false if either user is null or undefined
-    }
-
-    const selectedTimesUser1 = user1.selectedTimes || [];
-    const selectedTimesUser2 = user2.selectedTimes || [];
-    return selectedTimesUser1.some((time) => selectedTimesUser2.includes(time));
-  };
+  const [allCourses, setAllCourses] = useState([]);
 
   useEffect(() => {
+    const matchUsers = (user1, user2) => {
+      if (!user1 || !user2 || !allCourses) {
+        return false;
+      }
+
+      const selectedTimesUser1 = user1.selectedTimes || [];
+      const selectedTimesUser2 = user2.selectedTimes || [];
+      const commonTimes = selectedTimesUser1.some((time) => selectedTimesUser2.includes(time));
+
+      const redCoursesUser1 = allCourses.filter((course) => course.color && course.color[user1.uid] === 'red').map((course) => course.firebaseKey);
+      const redCoursesUser2 = allCourses.filter((course) => course.color && course.color[user2.uid] === 'red').map((course) => course.firebaseKey);
+      const commonRedCourses = redCoursesUser1.some((course) => redCoursesUser2.includes(course));
+
+      return commonTimes && commonRedCourses;
+    };
+
     const fetchUserData = async () => {
       try {
-        const singleUser = await getSingleUser(user.uid); // Fetch single user data
-        setCurrentUser(singleUser); // Store single user data in state
+        const singleUser = await getSingleUser(user.uid);
+        setCurrentUser(singleUser);
       } catch (error) {
         console.error('Error fetching single user:', error);
       }
     };
 
-    fetchUserData(); // Fetch single user data
+    fetchUserData();
+
+    getCourses()
+      .then((courses) => {
+        setAllCourses(courses);
+      })
+      .catch((error) => {
+        console.error('Error fetching courses:', error);
+      });
 
     getUsers()
       .then((users) => {
-        console.warn('All users:', users);
         const otherUsers = users.filter((u) => u.uid !== user.uid);
-        console.warn('Other users:', otherUsers);
-        const matches = otherUsers.filter((otherUser) => matchUsers(currentUser, otherUser)); // Use currentUser for matching
-        console.warn('Matched users:', matches); // Check if matching works
+        const matches = otherUsers.filter((otherUser) => matchUsers(currentUser, otherUser));
+        console.warn('Matched users:', matches);
         setMatchedUsers(matches);
         setLoading(false);
       })
@@ -45,7 +59,7 @@ export default function MatchPage() {
         console.error('Error fetching users:', error);
         setLoading(false);
       });
-  }, [user, currentUser]); // Add currentUser to dependency array
+  }, [user, currentUser, allCourses]);
 
   return (
     <div>

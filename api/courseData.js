@@ -9,8 +9,20 @@ const getCourses = () => new Promise((resolve, reject) => {
       'Content-Type': 'application/json',
     },
   })
-    .then((response) => response.json())
-    .then((data) => resolve(Object.values(data)))
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error('Failed to fetch courses');
+      }
+      return response.json();
+    })
+    .then((data) => {
+      // Transform the courses object into an array
+      const coursesArray = Object.keys(data).map((key) => ({
+        ...data[key],
+        firebaseKey: key,
+      }));
+      resolve(coursesArray);
+    })
     .catch(reject);
 });
 
