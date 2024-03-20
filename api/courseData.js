@@ -16,7 +16,6 @@ const getCourses = () => new Promise((resolve, reject) => {
       return response.json();
     })
     .then((data) => {
-      // Transform the courses object into an array
       const coursesArray = Object.keys(data).map((key) => ({
         ...data[key],
         firebaseKey: key,

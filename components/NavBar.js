@@ -36,7 +36,7 @@ export default function NavBar() {
         <Navbar.Collapse>
           <Nav className="mx-auto">
             <Link passHref href="/">
-              <Button variant="warning" className="mx-2">Courses</Button>
+              <Button className="button2">Courses</Button>
             </Link>
             <Link passHref href="/">
               <Button variant="warning" className="mx-2">Favorites</Button>

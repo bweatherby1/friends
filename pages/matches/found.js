@@ -9,11 +9,11 @@ export default function MatchPage() {
   const [currentUser, setCurrentUser] = useState(null);
   const [matchedUsers, setMatchedUsers] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [allCourses, setAllCourses] = useState([]);
+  const [searchCompleted, setSearchCompleted] = useState(false);
 
   useEffect(() => {
-    const matchUsers = (user1, user2) => {
-      if (!user1 || !user2 || !allCourses) {
+    const matchUsers = (user1, user2, courses) => {
+      if (!user1 || !user2 || !courses) {
         return false;
       }
 
@@ -21,8 +21,8 @@ export default function MatchPage() {
       const selectedTimesUser2 = user2.selectedTimes || [];
       const commonTimes = selectedTimesUser1.some((time) => selectedTimesUser2.includes(time));
 
-      const redCoursesUser1 = allCourses.filter((course) => course.color && course.color[user1.uid] === 'red').map((course) => course.firebaseKey);
-      const redCoursesUser2 = allCourses.filter((course) => course.color && course.color[user2.uid] === 'red').map((course) => course.firebaseKey);
+      const redCoursesUser1 = courses.filter((course) => course.color && course.color[user1.uid] === 'red').map((course) => course.firebaseKey);
+      const redCoursesUser2 = courses.filter((course) => course.color && course.color[user2.uid] === 'red').map((course) => course.firebaseKey);
       const commonRedCourses = redCoursesUser1.some((course) => redCoursesUser2.includes(course));
 
       return commonTimes && commonRedCourses;
@@ -39,27 +39,22 @@ export default function MatchPage() {
 
     fetchUserData();
 
-    getCourses()
-      .then((courses) => {
-        setAllCourses(courses);
-      })
-      .catch((error) => {
-        console.error('Error fetching courses:', error);
-      });
-
-    getUsers()
-      .then((users) => {
-        const otherUsers = users.filter((u) => u.uid !== user.uid);
-        const matches = otherUsers.filter((otherUser) => matchUsers(currentUser, otherUser));
-        console.warn('Matched users:', matches);
-        setMatchedUsers(matches);
-        setLoading(false);
-      })
-      .catch((error) => {
-        console.error('Error fetching users:', error);
-        setLoading(false);
-      });
-  }, [user, currentUser, allCourses]);
+    if (!searchCompleted) {
+      Promise.all([getCourses(), getUsers()])
+        .then(([courses, users]) => {
+          const otherUsers = users.filter((u) => u.uid !== user.uid);
+          const matches = otherUsers.filter((otherUser) => matchUsers(currentUser, otherUser, courses));
+          setMatchedUsers(matches);
+          setLoading(false);
+          setSearchCompleted(true); // Indicate that search has been completed
+        })
+        .catch((error) => {
+          console.error('Error fetching data:', error);
+          setLoading(false);
+          setSearchCompleted(true); // Even if there's an error, mark search as completed
+        });
+    }
+  }, [user.uid, currentUser, searchCompleted]);
 
   return (
     <div>
