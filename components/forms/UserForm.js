@@ -13,6 +13,7 @@ const initialState = {
   bio: '',
   skillLevel: '',
   selectedTimes: [],
+  uid: '',
 };
 
 function UserForm({ obj, uid }) {
@@ -38,17 +39,30 @@ function UserForm({ obj, uid }) {
   }, [uid, user]);
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    if (name === 'skillLevel' || name === 'name' || name === 'bio' || name === 'image') {
+    const {
+      name,
+      value,
+      type,
+      checked,
+    } = e.target;
+    if (type === 'checkbox') {
+      // If checkbox, handle differently
+      if (checked) {
+        setFormInput((prevState) => ({
+          ...prevState,
+          selectedTimes: [...formInput.selectedTimes, value], // Add to selectedTimes
+        }));
+      } else {
+        setFormInput((prevState) => ({
+          ...prevState,
+          selectedTimes: formInput.selectedTimes.filter((time) => time !== value), // Remove from selectedTimes
+        }));
+      }
+    } else {
+      // For other inputs, handle normally
       setFormInput((prevState) => ({
         ...prevState,
         [name]: value,
-      }));
-    } else {
-      const selectedTimes = Array.from(e.target.selectedOptions, (option) => option.value);
-      setFormInput((prevState) => ({
-        ...prevState,
-        selectedTimes: selectedTimes || [],
       }));
     }
   };
@@ -70,9 +84,16 @@ function UserForm({ obj, uid }) {
       for (let minute = 0; minute < 60; minute += 30) {
         const time = `${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}`;
         options.push(
-          <option key={time} value={time}>
-            {time}
-          </option>,
+          <Form.Check
+            key={time}
+            type="checkbox"
+            id={time}
+            label={time}
+            name="selectedTimes"
+            value={time}
+            checked={formInput.selectedTimes && formInput.selectedTimes.includes(time)}
+            onChange={handleChange}
+          />,
         );
       }
     }
@@ -133,17 +154,9 @@ function UserForm({ obj, uid }) {
         </Form.Select>
       </FloatingLabel>
 
-      <FloatingLabel controlId="selectedTime" label="Select Time" className="mb-3">
-        <Form.Select
-          name="selectedTime"
-          value={formInput.selectedTimes || []} // Ensure value is not undefined
-          onChange={handleChange}
-          required
-          multiple
-        >
-          {generateTimeOptions()}
-        </Form.Select>
-      </FloatingLabel>
+      <Form.Group controlId="selectedTime" className="mb-3">
+        {generateTimeOptions()}
+      </Form.Group>
 
       <Button type="submit">{obj && obj.uid ? 'Update' : 'Create'} Profile</Button>
     </Form>

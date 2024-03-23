@@ -59,9 +59,14 @@ export default function MatchPage() {
   return (
     <div>
       <h1>Matched Users</h1>
-      {loading && <p>Loading...</p>}
-      {!loading && matchedUsers.length === 3 && <p>No matches found.</p>}
-      {!loading && matchedUsers.length > 0 && <UserCards users={matchedUsers} />}
+      <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between' }}>
+        {loading && <p>Loading...</p>}
+        {!loading && matchedUsers.length === 0 && <p>No matches found.</p>}
+        {!loading
+          && matchedUsers.map((matchedUser) => (
+            <UserCards key={matchedUser.uid} users={[matchedUser]} style={{ flex: '0 0 30%', marginBottom: '20px' }} />
+          ))}
+      </div>
     </div>
   );
 }

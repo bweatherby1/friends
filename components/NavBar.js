@@ -39,10 +39,10 @@ export default function NavBar() {
               <Button className="button2">Courses</Button>
             </Link>
             <Link passHref href="/">
-              <Button variant="warning" className="mx-2">Favorites</Button>
+              <Button className="button2">Matches</Button>
             </Link>
             <Link passHref href="/matches/found">
-              <Button variant="warning" className="mx-2">Find A Partner</Button>
+              <Button className="button2">Find A Partner</Button>
             </Link>
           </Nav>
           <Nav>

@@ -1,12 +1,28 @@
 import React, { useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
 import { Button } from 'react-bootstrap';
 import Link from 'next/link';
 import { useAuth } from '../utils/context/authContext';
-import { getUserData } from '../api/userData';
+import { deleteUser, getUserData } from '../api/userData';
 
 export default function ProfilePage() {
   const { user } = useAuth();
   const [userData, setUserData] = useState(null);
+  const router = useRouter();
+
+  const deleteThisUser = () => {
+    if (window.confirm(`Delete ${userData.name} profile?`)) {
+      deleteUser(userData.uid)
+        .then(() => {
+          alert('User deleted successfully.');
+          router.push('/login');
+        })
+        .catch((error) => {
+          console.error('Error deleting user:', error);
+          alert('An error occurred while deleting the user. Please try again later.');
+        });
+    }
+  };
 
   useEffect(() => {
     if (user) {
@@ -44,6 +60,9 @@ export default function ProfilePage() {
             <Button variant="warning">UPDATE</Button>
           </div>
         </Link>
+        <Button variant="danger" onClick={deleteThisUser} className="m-2">
+          DELETE
+        </Button>
       </main>
     </div>
   );

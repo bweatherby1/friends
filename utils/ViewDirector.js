@@ -24,6 +24,7 @@ const ViewDirectorBasedOnUserAuthStatus = ({ component: Component, pageProps }) 
           setUserDataLoading(false);
         }
       } else {
+        setUserHasData(false); // Set userHasData to false when user is not authenticated
         setUserDataLoading(false);
       }
     };
@@ -38,17 +39,15 @@ const ViewDirectorBasedOnUserAuthStatus = ({ component: Component, pageProps }) 
   if (user) {
     if (!userHasData) {
       return (
-        <>
-          <NavBar user={user} />
-          <div className="container">
-            <UserForm obj={null} uid={user.uid} />
-          </div>
-        </>
+        <div className="container">
+          <UserForm obj={null} uid={user.uid} />
+        </div>
       );
     }
     return (
       <>
         <NavBar user={user} />
+        <hr />
         <div className="container">
           <Component {...pageProps} />
         </div>
@@ -59,9 +58,9 @@ const ViewDirectorBasedOnUserAuthStatus = ({ component: Component, pageProps }) 
   return <Signin />;
 };
 
-export default ViewDirectorBasedOnUserAuthStatus;
-
 ViewDirectorBasedOnUserAuthStatus.propTypes = {
   component: PropTypes.func.isRequired,
   pageProps: PropTypes.oneOfType([PropTypes.object]).isRequired,
 };
+
+export default ViewDirectorBasedOnUserAuthStatus;

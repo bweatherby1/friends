@@ -16,7 +16,7 @@ const getUsers = () => usersCollection.get()
     throw error;
   });
 
-const deleteUser = (firebaseKey) => usersCollection.doc(firebaseKey).delete()
+const deleteUser = (uid) => usersCollection.doc(uid).delete()
   .then(() => {
     console.warn('User successfully deleted');
   })
