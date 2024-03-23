@@ -12,9 +12,9 @@ export default function UserCards({ users }) {
     <div className="user-cards">
       {users.map((userObj) => (
         <Card
-          key={userObj.uid} // Assuming userObj has a unique identifier like uid
-          style={{ width: '18rem', margin: '10px', backgroundColor: '#f0f0f0' }} // Set background color dynamically
-          onClick={() => handleCardClick(userObj.uid)} // Handle click event
+          key={userObj.uid}
+          style={{ width: '18rem', margin: '10px', backgroundColor: '#f0f0f0' }}
+          onClick={() => handleCardClick(userObj.uid)}
         >
           <Card.Img variant="top" src={userObj.image} alt={userObj.name} style={{ height: '300px' }} />
           <Card.Body>
