@@ -47,22 +47,30 @@ export default function ProfilePage() {
       <link rel="icon" href="/favicon.ico" />
 
       <main>
-        <h1>{userData.name}</h1>
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <p><img className="profilePage-img" src={userData.image} alt={userData.displayName} /></p>
-        <p>Bio: {userData.bio}</p>
-        <p>Skill Level: {userData.skillLevel}</p>
-        {userData.selectedTimes && Array.isArray(userData.selectedTimes) && (
-          <p>Selected Times: {userData.selectedTimes.join(', ')}</p>
-        )}
-        <Link href={`/user/edit/edit?uid=${user.uid}`} passHref>
-          <div>
-            <Button variant="warning">UPDATE</Button>
+        <div className="profile-section">
+          <h1>{userData.name}</h1>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <p><img className="profilePage-img" src={userData.image} alt={userData.displayName} /></p>
+          <div className="bio-box">
+            <p>{userData.bio}</p>
           </div>
-        </Link>
-        <Button variant="danger" onClick={deleteThisUser} className="m-2">
-          DELETE
-        </Button>
+          <div className="times-box">
+            {userData.selectedTimes && Array.isArray(userData.selectedTimes) && (
+              <p>Selected Times: {userData.selectedTimes.join(', ')}</p>
+            )}
+          </div>
+        </div>
+        <div className="actions-section">
+          <p>Skill Level: {userData.skillLevel}</p>
+          <Link href={`/user/edit/edit?uid=${user.uid}`} passHref>
+            <div>
+              <Button className="button2">UPDATE</Button>
+            </div>
+          </Link>
+          <Button className="button2" onClick={deleteThisUser}>
+            DELETE
+          </Button>
+        </div>
       </main>
     </div>
   );
