@@ -49,12 +49,17 @@ function CourseCard({ courseObj, onUpdate }) {
             <Button variant="primary" className="m-2">VIEW COURSE DETAILS</Button>
           </Link>
         </p>
-        <Link href={`/course/edit/${courseObj.firebaseKey}`} passHref>
-          <Button variant="warning">UPDATE</Button>
-        </Link>
-        <Button variant="danger" onClick={deleteThisCourse} className="m-2">
-          DELETE
-        </Button>
+        {/* Check if the user is the owner of the course */}
+        {user && user.uid === 'GxuQ9rUDKaQ41UFywrNkZuTzT5v2' && (
+          <>
+            <Link href={`/course/edit/${courseObj.firebaseKey}`} passHref>
+              <Button variant="warning">UPDATE</Button>
+            </Link>
+            <Button variant="danger" onClick={deleteThisCourse} className="m-2">
+              DELETE
+            </Button>
+          </>
+        )}
       </Card.Body>
     </Card>
   );
@@ -67,6 +72,7 @@ CourseCard.propTypes = {
     address: PropTypes.string,
     firebaseKey: PropTypes.string,
     color: PropTypes.objectOf(PropTypes.string),
+    ownerUid: PropTypes.string, // Assuming ownerUid is present in courseObj
   }).isRequired,
   onUpdate: PropTypes.func.isRequired,
 };

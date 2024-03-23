@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Card } from 'react-bootstrap';
+import { Button, Card } from 'react-bootstrap';
+import Link from 'next/link';
 
 export default function UserCards({ users }) {
   const handleCardClick = (uid) => {
@@ -24,7 +25,9 @@ export default function UserCards({ users }) {
             {userObj.selectedTimes && Array.isArray(userObj.selectedTimes) && (
               <p className="card-text">Selected Times: {userObj.selectedTimes.join(', ')}</p>
             )}
-            <p className="card-text bold">{userObj.address}</p>
+            <Link href="/" passHref>
+              <Button className="linkUp">Link Up!</Button>
+            </Link>
           </Card.Body>
         </Card>
       ))}
