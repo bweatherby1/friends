@@ -38,7 +38,7 @@ export default function NavBar() {
             <Link passHref href="/">
               <Button className="button2">Courses</Button>
             </Link>
-            <Link passHref href="/">
+            <Link passHref href="/matches/matches">
               <Button className="button2">Matches</Button>
             </Link>
             <Link passHref href="/matches/found">

@@ -75,6 +75,28 @@ const getUserData = (uid) => usersCollection.where('uid', '==', uid).get()
     throw error;
   });
 
+const deleteMatchedUser = async (uid) => {
+  try {
+    const currentUserID = firebase.auth().currentUser.uid;
+    const userRef = firebase.firestore().collection('users').doc(currentUserID);
+
+    // Fetch current user's data
+    const userDoc = await userRef.get();
+    const userData = userDoc.data();
+
+    // Remove the UID from the matches array
+    const updatedMatches = userData.matches.filter((match) => match !== uid);
+
+    // Update the matches array in Firestore
+    await userRef.update({ matches: updatedMatches });
+
+    console.warn('User successfully deleted from matches');
+  } catch (error) {
+    console.error('Error deleting user from matches:', error);
+    throw error;
+  }
+};
+
 export {
   getUsers,
   createUser,
@@ -82,4 +104,5 @@ export {
   getSingleUser,
   updateUser,
   getUserData,
+  deleteMatchedUser,
 };
