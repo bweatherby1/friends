@@ -3,6 +3,7 @@ import { getSingleUser, getUsers } from '../../api/userData';
 import { useAuth } from '../../utils/context/authContext';
 import UserCards from '../../components/UserCards';
 import { getCourses } from '../../api/courseData';
+import DateTimeComponent from '../../components/dateTime';
 
 export default function MatchPage() {
   const { user } = useAuth();
@@ -58,7 +59,7 @@ export default function MatchPage() {
 
   return (
     <div>
-      <h1>Matched Users</h1>
+      <h1>Your Matches for <DateTimeComponent /></h1>
       <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between' }}>
         {loading && <p>Loading...</p>}
         {!loading && matchedUsers.length === 0 && <p>No matches found.</p>}
