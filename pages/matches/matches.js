@@ -56,22 +56,31 @@ function MatchedUsersPage() {
   return (
     <Container>
       <h1>Previous Matches</h1>
-      <Row>
+      <Row xs={1} sm={2} md={3}>
         {matchedUsers.map((userObj) => (
-          <Col key={userObj.uid} xs={12} sm={6} md={4} lg={3}>
-            <Card style={{ marginBottom: '20px' }}>
-              <Card.Img variant="top" src={userObj.image} alt={userObj.name} />
-              <Card.Body>
-                <Card.Title>{userObj.name}</Card.Title>
-                <Card.Text>{userObj.bio}</Card.Text>
-                <Card.Text>Skill Level: {userObj.skillLevel}</Card.Text>
-                {userObj.selectedTimes && Array.isArray(userObj.selectedTimes) && (
-                  <Card.Text>Selected Times: {userObj.selectedTimes.join(', ')}</Card.Text>
-                )}
-                <Button onClick={() => handleDeleteUser(userObj.uid)} variant="danger">Delete</Button>
-              </Card.Body>
+          <Col key={userObj.uid} style={{ marginBottom: '20px' }}>
+            <Card className="card">
+              <div className="matched-card">
+                <div className="card-content">
+                  <div className="first-content">
+                    <Card.Img variant="top" src={userObj.image} alt={userObj.name} className="card-img-top" />
+                    <div className="name-overlay">{userObj.name}</div>
+                  </div>
+                  <div className="second-content">
+                    <Card.Body>
+                      <Card.Text>{userObj.bio}</Card.Text>
+                      <Card.Text>Skill Level: {userObj.skillLevel}</Card.Text>
+                      {userObj.selectedTimes && Array.isArray(userObj.selectedTimes) && (
+                      <Card.Text>Selected Times: {userObj.selectedTimes.join(', ')}</Card.Text>
+                      )}
+                      <Button onClick={() => handleDeleteUser(userObj.uid)} variant="danger">Delete</Button>
+                    </Card.Body>
+                  </div>
+                </div>
+              </div>
             </Card>
           </Col>
+
         ))}
       </Row>
     </Container>
