@@ -36,13 +36,13 @@ export default function NavBar() {
         <Navbar.Collapse>
           <Nav className="mx-auto">
             <Link passHref href="/">
-              <Button className="button2">Courses</Button>
+              <Button className="button2 mx-2">Courses</Button>
             </Link>
             <Link passHref href="/matches/matches">
-              <Button className="button2">Matches</Button>
+              <Button className="button2 mx-2">Matches</Button>
             </Link>
             <Link passHref href="/matches/found">
-              <Button className="button2">Find A Partner</Button>
+              <Button className="button2 mx-2">Find A Partner</Button>
             </Link>
           </Nav>
           <Nav>

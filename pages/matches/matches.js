@@ -6,7 +6,7 @@ import firebase from 'firebase/app';
 import 'firebase/firestore';
 import { deleteMatchedUser } from '../../api/userData';
 
-function MatchedUsersPage() {
+function MatchesPage() {
   const [matchedUsers, setMatchedUsers] = useState([]);
 
   useEffect(() => {
@@ -44,8 +44,7 @@ function MatchedUsersPage() {
       await deleteMatchedUser(uid);
 
       // Update the matchedUsers state to reflect the deletion
-      const updatedUsers = matchedUsers.filter((user) => user.uid !== uid);
-      setMatchedUsers(updatedUsers);
+      setMatchedUsers((prevUsers) => prevUsers.filter((user) => user.uid !== uid));
 
       console.warn('User removed successfully');
     } catch (error) {
@@ -69,11 +68,15 @@ function MatchedUsersPage() {
                   <div className="second-content">
                     <Card.Body>
                       <Card.Text>{userObj.bio}</Card.Text>
-                      <Card.Text>Skill Level: {userObj.skillLevel}</Card.Text>
+                      <hr />
+                      <Card.Text>Skill: {userObj.skillLevel}</Card.Text>
+                      <hr />
                       {userObj.selectedTimes && Array.isArray(userObj.selectedTimes) && (
-                      <Card.Text>Selected Times: {userObj.selectedTimes.join(', ')}</Card.Text>
+                      <Card.Text>Times: {userObj.selectedTimes.join(', ')}</Card.Text>
                       )}
+                      <hr />
                       <Button onClick={() => handleDeleteUser(userObj.uid)} variant="danger">Delete</Button>
+                      <Button href="/" variant="primary">Message</Button>
                     </Card.Body>
                   </div>
                 </div>
@@ -87,4 +90,4 @@ function MatchedUsersPage() {
   );
 }
 
-export default MatchedUsersPage;
+export default MatchesPage;
