@@ -2,33 +2,16 @@ import React, { useState, useEffect } from 'react';
 import { getSingleUser, getUsers } from '../../api/userData';
 import { useAuth } from '../../utils/context/authContext';
 import UserCards from '../../components/UserCards';
-import { getCourses } from '../../api/courseData';
 import DateTimeComponent from '../../components/dateTime';
 
-export default function MatchPage() {
+export default function FoundPage() {
   const { user } = useAuth();
   const [currentUser, setCurrentUser] = useState(null);
-  const [matchedUsers, setMatchedUsers] = useState([]);
+  const [foundUsers, setFoundUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchCompleted, setSearchCompleted] = useState(false);
 
   useEffect(() => {
-    const matchUsers = (user1, user2, courses) => {
-      if (!user1 || !user2 || !courses) {
-        return false;
-      }
-
-      const selectedTimesUser1 = user1.selectedTimes || [];
-      const selectedTimesUser2 = user2.selectedTimes || [];
-      const commonTimes = selectedTimesUser1.some((time) => selectedTimesUser2.includes(time));
-
-      const redCoursesUser1 = courses.filter((course) => course.color && course.color[user1.uid] === 'red').map((course) => course.firebaseKey);
-      const redCoursesUser2 = courses.filter((course) => course.color && course.color[user2.uid] === 'red').map((course) => course.firebaseKey);
-      const commonRedCourses = redCoursesUser1.some((course) => redCoursesUser2.includes(course));
-
-      return commonTimes && commonRedCourses;
-    };
-
     const fetchUserData = async () => {
       try {
         const singleUser = await getSingleUser(user.uid);
@@ -40,12 +23,13 @@ export default function MatchPage() {
 
     fetchUserData();
 
-    if (!searchCompleted) {
-      Promise.all([getCourses(), getUsers()])
-        .then(([courses, users]) => {
+    if (!searchCompleted && currentUser) {
+      Promise.all([getUsers()])
+        .then(([users]) => {
           const otherUsers = users.filter((u) => u.uid !== user.uid);
-          const matches = otherUsers.filter((otherUser) => matchUsers(currentUser, otherUser, courses));
-          setMatchedUsers(matches);
+          const matches = currentUser.matches.map((match) => match.uid);
+          const filteredUsers = otherUsers.filter((otherUser) => !matches.includes(otherUser.uid));
+          setFoundUsers(filteredUsers);
           setLoading(false);
           setSearchCompleted(true);
         })
@@ -57,15 +41,28 @@ export default function MatchPage() {
     }
   }, [user.uid, currentUser, searchCompleted]);
 
+  // Function to handle link-up click
+  const handleLinkUpClick = () => {
+    // Perform actions for link-up click
+    // For example, you can update state or perform an API call
+    // In this case, we'll just reload the page
+    window.location.reload();
+  };
+
   return (
     <div>
-      <h1>Your Matches for <DateTimeComponent /></h1>
+      <h1>Users Found for <DateTimeComponent /></h1>
       <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between' }}>
         {loading && <p>Loading...</p>}
-        {!loading && matchedUsers.length === 0 && <p>No matches found.</p>}
+        {!loading && foundUsers.length === 0 && <p>No matches found.</p>}
         {!loading
-          && matchedUsers.map((matchedUser) => (
-            <UserCards key={matchedUser.uid} users={[matchedUser]} style={{ flex: '0 0 30%', marginBottom: '20px' }} />
+          && foundUsers.map((foundUser) => (
+            <UserCards
+              key={foundUser.uid}
+              users={[foundUser]}
+              style={{ flex: '0 0 30%', marginBottom: '20px' }}
+              onLinkUpClick={handleLinkUpClick} // Pass the handler to the UserCards component
+            />
           ))}
       </div>
     </div>

@@ -20,9 +20,7 @@ body {
   width: 400px;
 }
 
-.navbar-gradient {
-  background: linear-gradient(to right, lightblue, liteblue);
-}
+
 
 .button2 {
   display: inline-block;
@@ -35,7 +33,7 @@ body {
   cursor: pointer;
   font-size: 18px;
   border-radius: 0.5em;
-  background: #e8e8e8;
+  background: #51f254;
   border: 1px solid #e8e8e8;
   box-shadow: 6px 6px 12px #c5c5c5, -6px -6px 12px #ffffff;
 }
@@ -68,7 +66,7 @@ body {
   top: 180%;
   width: 160%;
   height: 190%;
-  background-color: #009087;
+  background-color: #2ffd20;
   border-radius: 50%;
   display: block;
   transition: all 0.5s 0.1s cubic-bezier(0.55, 0, 0.1, 1);

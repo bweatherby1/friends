@@ -62,6 +62,9 @@ function UserCards({ users }) {
       }
 
       console.warn('User added to matches successfully');
+
+      // After successfully linking up, reload the page
+      window.location.reload();
     } catch (error) {
       console.error('Error adding user to matches:', error);
     }
@@ -70,18 +73,29 @@ function UserCards({ users }) {
   return (
     <div className="user-cards">
       {users.map((userObj) => (
-        <Card key={userObj.uid} style={{ width: '18rem', margin: '10px', backgroundColor: '#f0f0f0' }}>
-          <Card.Img variant="top" src={userObj.image} alt={userObj.name} style={{ height: '300px' }} />
-          <Card.Body>
-            <Card.Title>{userObj.name}</Card.Title>
-            <p className="card-text">{userObj.bio}</p>
-            <p className="card-text">Skill Level: {userObj.skillLevel}</p>
-            {userObj.selectedTimes && Array.isArray(userObj.selectedTimes) && <p className="card-text">Selected Times: {userObj.selectedTimes.join(', ')}</p>}
-            <Button className="linkUp" onClick={() => handleLinkUpClick(userObj)}>
-              Link Up!
-            </Button>
-          </Card.Body>
-        </Card>
+        <div key={userObj.uid} className="card">
+          <div className="matched-card">
+            <div className="card-content">
+              <div className="first-content">
+                <Card style={{ width: '18rem', margin: '10px', backgroundColor: '#f0f0f0' }}>
+                  <Card.Img variant="top" src={userObj.image} alt={userObj.name} style={{ height: '300px' }} />
+                  <div className="name-overlay">{userObj.name}</div>
+                </Card>
+              </div>
+              <div className="second-content">
+                <Card.Body>
+                  <Card.Text>{userObj.bio}</Card.Text>
+                  <hr />
+                  <Card.Text>Skill Level: {userObj.skillLevel}</Card.Text>
+                  {userObj.selectedTimes && Array.isArray(userObj.selectedTimes) && (
+                    <Card.Text>Selected Times: {userObj.selectedTimes.join(', ')}</Card.Text>
+                  )}
+                  <Button className="linkUp" onClick={() => handleLinkUpClick(userObj)}>Link Up!</Button>
+                </Card.Body>
+              </div>
+            </div>
+          </div>
+        </div>
       ))}
     </div>
   );
