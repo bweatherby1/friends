@@ -5,9 +5,12 @@ import {
 import firebase from 'firebase/app';
 import 'firebase/firestore';
 import { deleteMatchedUser } from '../../api/userData';
+import MessengerPop from '../../components/message';
 
 function MatchesPage() {
   const [matchedUsers, setMatchedUsers] = useState([]);
+  const [showMessenger, setShowMessenger] = useState(false);
+  const [selectedUser, setSelectedUser] = useState(null);
 
   useEffect(() => {
     // Fetch matched users from Firestore
@@ -52,6 +55,15 @@ function MatchesPage() {
     }
   };
 
+  const handleOpenMessenger = (user) => {
+    setSelectedUser(user);
+    setShowMessenger(true);
+  };
+
+  const handleCloseMessenger = () => {
+    setShowMessenger(false);
+  };
+
   return (
     <Container>
       <h1>Previous Matches</h1>
@@ -72,20 +84,27 @@ function MatchesPage() {
                       <Card.Text>Skill: {userObj.skillLevel}</Card.Text>
                       <hr />
                       {userObj.selectedTimes && Array.isArray(userObj.selectedTimes) && (
-                      <Card.Text>Times: {userObj.selectedTimes.join(', ')}</Card.Text>
+                        <Card.Text>Times: {userObj.selectedTimes.join(', ')}</Card.Text>
                       )}
                       <hr />
                       <Button onClick={() => handleDeleteUser(userObj.uid)} variant="danger">Delete</Button>
-                      <Button href="/" variant="primary">Message</Button>
+                      {/* Render Message button */}
+                      <Button onClick={() => handleOpenMessenger(userObj)} variant="primary">Message</Button>
                     </Card.Body>
                   </div>
                 </div>
               </div>
             </Card>
           </Col>
-
         ))}
       </Row>
+      {/* Render MessengerPop component as modal or popover */}
+      {showMessenger && selectedUser && (
+        <MessengerPop
+          user={selectedUser}
+          handleClose={handleCloseMessenger}
+        />
+      )}
     </Container>
   );
 }
