@@ -108,8 +108,13 @@ function MatchesPage() {
               <div className="matched-card">
                 <div className="card-content">
                   <div className="first-content">
-                    <Card.Img variant="top" src={userObj.image || ''} className="card-img-top" />
-                    <div className="name-overlay">{userObj.name}</div>
+                    {userObj && (
+                    <Card.Img variant="top" src={userObj.image || 'fallback_image_url'} className="card-img-top" />
+                    )}
+
+                    {console.warn('userObj:', userObj)}
+                    <div className="name-overlay">{userObj && userObj.name ? userObj.name : 'Unknown User'}</div>
+
                     {/* Display notification dot if user has unread messages */}
                     {unreadMessages[userObj.uid] > 0 && (
                       <Badge variant="danger" className="notification-dot">{unreadMessages[userObj.uid]}</Badge>

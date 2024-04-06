@@ -1,3 +1,4 @@
+// Add CSS class to handle the height and scrolling of the collapse window
 import React, { useEffect, useState, useRef } from 'react';
 import {
   Navbar, Container, Nav, Button, Badge, Tabs, Tab,

@@ -251,21 +251,21 @@ body {
 /* Collapse window styles */
 .collapse-window {
   position: fixed;
-  bottom: 20px;
-  left: 20px;
-  max-width: 300px;
-  background-color: white;
-  border: 1px solid #ced4da;
-  border-radius: 5px;
-  padding: 10px;
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
-  z-index: 999;
+  bottom: 0; /* Position at the bottom of the viewport */
+  left: 0; /* Position at the left of the viewport */
+  width: 13%; /* Set width to 40% of the viewport width */
+  max-height: 60vh; /* Set maximum height to 60% of the viewport height */
+  overflow-y: auto; /* Enable vertical scrolling */
+  background-color: #fff; /* Add your preferred background color */
+  z-index: 1000; /* Set a high z-index to ensure it appears above other content */
+  border-top-right-radius: 8px; /* Optional: Add border radius for styling */
 }
 
-/* Collapse content styles */
 .collapse-content {
-  padding: 10px;
+  padding: 20px; /* Add padding as needed */
 }
+
+
 
 /* Section header styles */
 .section-header {
