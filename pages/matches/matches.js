@@ -108,7 +108,7 @@ function MatchesPage() {
               <div className="matched-card">
                 <div className="card-content">
                   <div className="first-content">
-                    <Card.Img variant="top" src={userObj.image} className="card-img-top" />
+                    <Card.Img variant="top" src={userObj.image || ''} className="card-img-top" />
                     <div className="name-overlay">{userObj.name}</div>
                     {/* Display notification dot if user has unread messages */}
                     {unreadMessages[userObj.uid] > 0 && (
