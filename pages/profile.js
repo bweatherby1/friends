@@ -48,28 +48,34 @@ export default function ProfilePage() {
 
       <main>
         <div className="profile-section">
-          <h1>{userData.name}</h1>
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <p><img className="profilePage-img" src={userData.image} alt={userData.displayName} /></p>
-          <div className="bio-box">
-            <p>{userData.bio}</p>
+          <div className="image-section">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img className="profilePage-img" src={userData.image} alt={userData.displayName} />
+            <div className="skill-level">
+              <h1>{userData.skillLevel}</h1>
+            </div>
           </div>
-          <div className="times-box">
-            {userData.selectedTimes && Array.isArray(userData.selectedTimes) && (
-              <p>Selected Times: {userData.selectedTimes.join(', ')}</p>
-            )}
+          <div className="content-section">
+            <h1>{userData.name}</h1>
+            <div className="bio-box">
+              <p>{userData.bio}</p>
+            </div>
+            <div className="times-box">
+              {userData.selectedTimes && Array.isArray(userData.selectedTimes) && (
+                <p>Selected Times: {userData.selectedTimes.join(', ')}</p>
+              )}
+            </div>
           </div>
         </div>
         <div className="actions-section">
-          <p>Skill Level: {userData.skillLevel}</p>
-          <Link href={`/user/edit/edit?uid=${user.uid}`} passHref>
-            <div>
-              <Button className="button2">UPDATE</Button>
-            </div>
-          </Link>
-          <Button className="button2" onClick={deleteThisUser}>
-            DELETE
-          </Button>
+          <div className="button-container">
+            <Link href={`/user/edit/edit?uid=${user.uid}`} passHref>
+              <Button className="button2 extra-styling">UPDATE</Button>
+            </Link>
+            <Button className="button2 extra-styling" onClick={deleteThisUser}>
+              DELETE
+            </Button>
+          </div>
         </div>
       </main>
     </div>

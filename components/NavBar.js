@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import {
-  Navbar, Container, Nav, Button, Badge,
+  Navbar, Container, Nav, Button, Badge, Tabs, Tab,
 } from 'react-bootstrap';
 import firebase from 'firebase/app';
 import { signOut } from '../utils/auth';
@@ -13,6 +13,7 @@ export default function NavBar() {
   const [userData, setUserData] = useState(null);
   const [showCollapse, setShowCollapse] = useState(false); // State to control visibility of CollapseComponent
   const [unreadMessages, setUnreadMessages] = useState(0); // State to track unread messages count
+  const [key, setKey] = useState('findMatch'); // default active tab key
 
   useEffect(() => {
     if (user) {
@@ -103,7 +104,38 @@ export default function NavBar() {
       {showCollapse && (
         <div className="collapse-window">
           <div ref={collapseRef} className="collapse-content">
-            {/* Your collapse content here */}
+            <Tabs
+              id="controlled-tab-example"
+              activeKey={key}
+              onSelect={(k) => setKey(k)}
+              className="mt-2"
+            >
+              <Tab eventKey="findMatch" title="Find and Match">
+                <div className="tab-content">
+                  <ul>
+                    <li>
+                      <h2 className="section-header">How to find and match with a partner</h2>
+                      <p>- First, select at least one time on your profile(click the &quot;Update&quot; button if you have none selected.)</p>
+                      <p>-Second, you will go to the &quot;Courses&quot; tab and click on the image of at least one course to turn it red, indicating you want to play that course.</p>
+                      <p>- Third, you will click on the &quot;Find a partner&quot; tab.</p>
+                      <p>- Fourth, you will be shown all the players matching your criteria. Here you will hover on that players card and scroll down to the bottom to click &quot;Link up&quot; if you are interested in playing with them.</p>
+                      <p>- Lastly, you click the &quot;Matches&quot; tab to see your selected matches past and present.</p>
+                    </li>
+                  </ul>
+                </div>
+              </Tab>
+              <Tab eventKey="messageMatch" title="Message a Match">
+                <div className="tab-content">
+                  <ul>
+                    <li>
+                      <h2 className="section-header">How to message a match</h2>
+                      <p>- Assuming you have already made a match, first you click the &quot;Matches&quot; tab.</p>
+                      <p>- Here you will see all of your past and current matches, simply hover the players card you want to message and scroll down to the bottom. Here you can click the &quot;Message&quot; button and you will then be able to chat with that player.</p>
+                    </li>
+                  </ul>
+                </div>
+              </Tab>
+            </Tabs>
           </div>
         </div>
       )}
