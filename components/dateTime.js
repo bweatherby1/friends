@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-export const DateTimeComponent = () => {
+export const DTC = () => {
   const [date, setDate] = useState(new Date());
 
   useEffect(() => {
@@ -18,4 +18,4 @@ export const DateTimeComponent = () => {
   );
 };
 
-export default DateTimeComponent;
+export default DTC;

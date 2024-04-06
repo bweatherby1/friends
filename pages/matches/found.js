@@ -2,8 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { getSingleUser, getUsers } from '../../api/userData';
 import { useAuth } from '../../utils/context/authContext';
 import UserCards from '../../components/UserCards';
-// eslint-disable-next-line import/no-named-as-default, import/no-unresolved
-import DateTimeComponent from '../../components/DateTime';
+import DateTime from '../../components/DateTime';
 
 export default function FoundPage() {
   const { user } = useAuth();
@@ -25,8 +24,8 @@ export default function FoundPage() {
     fetchUserData();
 
     if (!searchCompleted && currentUser) {
-      Promise.all([getUsers()])
-        .then(([users]) => {
+      getUsers()
+        .then((users) => {
           const otherUsers = users.filter((u) => u.uid !== user.uid);
           const matches = currentUser.matches.map((match) => match.uid);
           const filteredUsers = otherUsers.filter((otherUser) => !matches.includes(otherUser.uid));
@@ -42,29 +41,20 @@ export default function FoundPage() {
     }
   }, [user.uid, currentUser, searchCompleted]);
 
-  // Function to handle link-up click
   const handleLinkUpClick = () => {
-    // Perform actions for link-up click
-    // For example, you can update state or perform an API call
-    // In this case, we'll just reload the page
-    window.location.reload();
+    // Handle link-up click actions
+    window.location.reload(); // For example, reload the page
   };
 
   return (
     <div>
-      <h1>Users Found for <DateTimeComponent /></h1>
+      <h1>
+        Users Found for <DateTime />
+      </h1>
       <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between' }}>
         {loading && <p>Loading...</p>}
         {!loading && foundUsers.length === 0 && <p>No matches found.</p>}
-        {!loading
-          && foundUsers.map((foundUser) => (
-            <UserCards
-              key={foundUser.uid}
-              users={[foundUser]}
-              style={{ flex: '0 0 30%', marginBottom: '20px' }}
-              onLinkUpClick={handleLinkUpClick} // Pass the handler to the UserCards component
-            />
-          ))}
+        {!loading && foundUsers.map((foundUser) => <UserCards key={foundUser.uid} users={[foundUser]} style={{ flex: '0 0 30%', marginBottom: '20px' }} onLinkUpClick={handleLinkUpClick} />)}
       </div>
     </div>
   );

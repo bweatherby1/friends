@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import Link from 'next/link';
 import { Button } from 'react-bootstrap';
 import { getCourses } from '../api/courseData';
@@ -9,13 +9,13 @@ function Home() {
   const [courses, setCourses] = useState([]);
   const { user } = useAuth();
 
-  const getAllTheCourses = () => {
+  const getAllTheCourses = useCallback(() => {
     getCourses(user.uid).then(setCourses);
-  };
+  }, [user.uid]); // Dependency added: user.uid
 
   useEffect(() => {
     getAllTheCourses();
-  }, []);
+  }, [getAllTheCourses]); // Dependency added: getAllTheCourses
 
   const handleUpdate = () => {
     getAllTheCourses();
