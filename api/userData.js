@@ -3,6 +3,9 @@ import { firebase } from '../utils/client';
 const db = firebase.firestore();
 const usersCollection = db.collection('users');
 
+// Reference to the Firebase Realtime Database
+const coursesRef = firebase.database().ref('courses');
+
 const getUsers = () => usersCollection.get()
   .then((querySnapshot) => {
     const users = [];
@@ -16,14 +19,21 @@ const getUsers = () => usersCollection.get()
     throw error;
   });
 
-const deleteUser = (uid) => usersCollection.doc(uid).delete()
-  .then(() => {
+const deleteUser = async (uid) => {
+  try {
+    // Delete user document from Firestore
+    await usersCollection.doc(uid).delete();
     console.warn('User successfully deleted');
-  })
-  .catch((error) => {
+
+    // Delete user's data from courses database
+    await coursesRef.child(uid).remove(); // Assuming `uid` is the key under which user's data is stored in the courses database
+
+    // Handle any other related data deletions
+  } catch (error) {
     console.error('Error deleting user:', error);
     throw error;
-  });
+  }
+};
 
 const getSingleUser = (uid) => usersCollection.doc(uid).get()
   .then((doc) => {

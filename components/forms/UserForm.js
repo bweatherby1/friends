@@ -39,30 +39,39 @@ function UserForm({ obj, uid }) {
   }, [uid, user]);
 
   const handleChange = (e) => {
-    const {
-      name,
-      value,
-      type,
-      checked,
-    } = e.target;
-    if (type === 'checkbox') {
-      // If checkbox, handle differently
-      if (checked) {
-        setFormInput((prevState) => ({
-          ...prevState,
-          selectedTimes: [...formInput.selectedTimes, value], // Add to selectedTimes
-        }));
-      } else {
-        setFormInput((prevState) => ({
-          ...prevState,
-          selectedTimes: formInput.selectedTimes.filter((time) => time !== value), // Remove from selectedTimes
-        }));
-      }
-    } else {
-      // For other inputs, handle normally
+    const { name, value } = e.target;
+    setFormInput((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
+  };
+
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    const reader = new FileReader();
+    reader.onloadend = () => {
       setFormInput((prevState) => ({
         ...prevState,
-        [name]: value,
+        image: reader.result,
+      }));
+    };
+    if (file) {
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleTimeSlotChange = (e) => {
+    // eslint-disable-next-line no-unused-vars
+    const { name, value, checked } = e.target;
+    if (checked) {
+      setFormInput((prevState) => ({
+        ...prevState,
+        selectedTimes: [...prevState.selectedTimes, value],
+      }));
+    } else {
+      setFormInput((prevState) => ({
+        ...prevState,
+        selectedTimes: prevState.selectedTimes.filter((time) => time !== value),
       }));
     }
   };
@@ -70,10 +79,10 @@ function UserForm({ obj, uid }) {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (obj && obj.uid) {
-      updateUser(obj.uid, formInput).then(() => router.push('/profile'));
+      updateUser(obj.uid, formInput).then(() => router.reload());
     } else {
       createUser(formInput).then(() => {
-        router.push('/profile');
+        router.reload();
       });
     }
   };
@@ -82,7 +91,9 @@ function UserForm({ obj, uid }) {
     const options = [];
     for (let hour = 6; hour <= 17; hour++) {
       for (let minute = 0; minute < 60; minute += 30) {
-        const time = `${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}`;
+        const hour12 = hour % 12 || 12; // Convert hour to 12-hour format
+        const ampm = hour < 12 ? 'AM' : 'PM'; // Determine AM/PM
+        const time = `${hour12.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')} ${ampm}`;
         options.push(
           <Form.Check
             key={time}
@@ -92,7 +103,7 @@ function UserForm({ obj, uid }) {
             name="selectedTimes"
             value={time}
             checked={formInput.selectedTimes && formInput.selectedTimes.includes(time)}
-            onChange={handleChange}
+            onChange={handleTimeSlotChange}
           />,
         );
       }
@@ -104,11 +115,11 @@ function UserForm({ obj, uid }) {
     <Form onSubmit={handleSubmit}>
       <h2 className="text-white mt-5">{obj && obj.uid ? 'Update' : 'Create'} Your Profile!</h2>
 
-      <FloatingLabel controlId="floatingInput1" label="Your Name" className="mb-3">
+      <FloatingLabel controlId="name" label="Your Name" className="mb-3">
         <Form.Control
           type="text"
           placeholder="Enter Name"
-          name="name"
+          name="name" // Assign the 'name' attribute here
           value={formInput.name || ''}
           onChange={handleChange}
           autoComplete="off"
@@ -117,11 +128,9 @@ function UserForm({ obj, uid }) {
 
       <FloatingLabel controlId="floatingInput2" label="Profile Pic" className="mb-3">
         <Form.Control
-          type="url"
-          placeholder="Enter an image url"
-          name="image"
-          value={formInput.image || ''} // Ensure value is not undefined
-          onChange={handleChange}
+          type="file"
+          accept="image/*"
+          onChange={handleImageChange}
         />
       </FloatingLabel>
 

@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { Button } from 'react-bootstrap';
@@ -24,9 +23,13 @@ function Home() {
 
   return (
     <div className="text-center my-4">
-      <Link href="/course/new" passHref>
-        <Button className="addCourse">Add A Course</Button>
-      </Link>
+      {/* Render "Add A Course" button only for the specific user */}
+      {user && user.uid === 'GxuQ9rUDKaQ41UFywrNkZuTzT5v2' && (
+        <Link href="/course/new" passHref>
+          <Button className="addCourse">Add A Course</Button>
+        </Link>
+      )}
+
       <div className="d-flex flex-wrap">
         {courses.map((course) => (
           <CourseCard

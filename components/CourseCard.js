@@ -9,6 +9,7 @@ import { useAuth } from '../utils/context/authContext';
 function CourseCard({ courseObj, onUpdate }) {
   const { user } = useAuth(); // Retrieve the current user
   const [cardColor, setCardColor] = useState('lightblue');
+  const [isHovering, setIsHovering] = useState(false); // State to track hover
   const cardRef = useRef(null);
 
   useEffect(() => {
@@ -35,30 +36,47 @@ function CourseCard({ courseObj, onUpdate }) {
 
   return (
     <Card
+      className="card2"
       ref={cardRef} // Set the ref to the card component
       key={courseObj.firebaseKey}
       style={{ width: '18rem', margin: '10px', backgroundColor: cardColor }}
       onClick={handleCardClick}
+      onMouseEnter={() => setIsHovering(true)} // Handle hover
+      onMouseLeave={() => setIsHovering(false)} // Handle mouse leave
     >
-      <Card.Img variant="top" src={courseObj.image} alt={courseObj.name} style={{ height: '300px' }} />
+      <Card.Img
+        variant="top"
+        src={courseObj.image}
+        alt={courseObj.name}
+        style={{
+          height: '300px',
+          transition: 'all 0.3s ease-in-out',
+          transform: isHovering ? 'scale(0.5)' : 'scale(1)',
+        }}
+      />
       <Card.Body>
         <Card.Title>{courseObj.name}</Card.Title>
-        <p className="card-text bold">{courseObj.address}</p>
-        <p>
-          <Link href={`/course/${courseObj.firebaseKey}`} passHref>
-            <Button variant="primary" className="m-2">VIEW COURSE DETAILS</Button>
-          </Link>
-        </p>
-        {/* Check if the user is the owner of the course */}
-        {user && user.uid === 'GxuQ9rUDKaQ41UFywrNkZuTzT5v2' && (
-          <>
-            <Link href={`/course/edit/${courseObj.firebaseKey}`} passHref>
-              <Button variant="warning">UPDATE</Button>
-            </Link>
-            <Button variant="danger" onClick={deleteThisCourse} className="m-2">
-              DELETE
-            </Button>
-          </>
+        {/* Conditional rendering based on hover state */}
+        {isHovering && (
+          <div className="card-info">
+            <p className="card-text bold">{courseObj.address}</p>
+            <p>
+              <Link href={`/course/${courseObj.firebaseKey}`} passHref>
+                <Button variant="primary" className="m-2">VIEW COURSE DETAILS</Button>
+              </Link>
+              {/* Check if the user is the owner of the course */}
+              {user && user.uid === 'GxuQ9rUDKaQ41UFywrNkZuTzT5v2' && (
+                <>
+                  <Link href={`/course/edit/${courseObj.firebaseKey}`} passHref>
+                    <Button variant="warning">UPDATE</Button>
+                  </Link>
+                  <Button variant="danger" onClick={deleteThisCourse} className="m-2">
+                    DELETE
+                  </Button>
+                </>
+              )}
+            </p>
+          </div>
         )}
       </Card.Body>
     </Card>
