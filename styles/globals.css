@@ -275,7 +275,7 @@ body {
 }
 
 .card2 {
-  --background: linear-gradient(to left, #b3df16 0%, #02b60b 100%);
+  background: linear-gradient(to left, #b3df16 0%, #02b60b 100%);
   width: 190px;
   height: 254px;
   padding: 5px;
