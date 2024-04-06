@@ -284,7 +284,6 @@ body {
   background: #f7ba2b;
   background: var(--background);
   position: relative;
-  z-index: 1;
  }
  
  .card2::after {
