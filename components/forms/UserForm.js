@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { useRouter } from 'next/router';
 import PropTypes from 'prop-types';
+import { useRouter } from 'next/router';
 import FloatingLabel from 'react-bootstrap/FloatingLabel';
 import Form from 'react-bootstrap/Form';
 import { Button } from 'react-bootstrap';
@@ -18,6 +18,7 @@ const initialState = {
 
 function UserForm({ obj, uid }) {
   const [formInput, setFormInput] = useState(initialState);
+  const [loading, setLoading] = useState(false); // New loading state
   const router = useRouter();
   const { user } = useAuth();
 
@@ -61,8 +62,7 @@ function UserForm({ obj, uid }) {
   };
 
   const handleTimeSlotChange = (e) => {
-    // eslint-disable-next-line no-unused-vars
-    const { name, value, checked } = e.target;
+    const { value, checked } = e.target;
     if (checked) {
       setFormInput((prevState) => ({
         ...prevState,
@@ -76,14 +76,20 @@ function UserForm({ obj, uid }) {
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (obj && obj.uid) {
-      updateUser(obj.uid, formInput).then(() => router.reload());
-    } else {
-      createUser(formInput).then(() => {
-        router.reload();
-      });
+    setLoading(true); // Set loading to true during form submission
+    try {
+      if (obj && obj.uid) {
+        await updateUser(obj.uid, formInput);
+      } else {
+        await createUser(formInput);
+      }
+      router.push('/profile');
+    } catch (error) {
+      console.error('Error submitting form:', error);
+    } finally {
+      setLoading(false); // Set loading back to false after submission completes
     }
   };
 
@@ -91,8 +97,8 @@ function UserForm({ obj, uid }) {
     const options = [];
     for (let hour = 6; hour <= 17; hour++) {
       for (let minute = 0; minute < 60; minute += 30) {
-        const hour12 = hour % 12 || 12; // Convert hour to 12-hour format
-        const ampm = hour < 12 ? 'AM' : 'PM'; // Determine AM/PM
+        const hour12 = hour % 12 || 12;
+        const ampm = hour < 12 ? 'AM' : 'PM';
         const time = `${hour12.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')} ${ampm}`;
         options.push(
           <Form.Check
@@ -119,10 +125,11 @@ function UserForm({ obj, uid }) {
         <Form.Control
           type="text"
           placeholder="Enter Name"
-          name="name" // Assign the 'name' attribute here
+          name="name" // Using the 'name' attribute
           value={formInput.name || ''}
           onChange={handleChange}
           autoComplete="off"
+          disabled={loading}
         />
       </FloatingLabel>
 
@@ -131,6 +138,7 @@ function UserForm({ obj, uid }) {
           type="file"
           accept="image/*"
           onChange={handleImageChange}
+          disabled={loading}
         />
       </FloatingLabel>
 
@@ -139,18 +147,20 @@ function UserForm({ obj, uid }) {
           as="textarea"
           placeholder="Bio"
           style={{ height: '100px' }}
-          name="bio"
+          name="bio" // Using the 'name' attribute
           value={formInput.bio || ''}
           onChange={handleChange}
+          disabled={loading}
         />
       </FloatingLabel>
 
       <FloatingLabel controlId="skillLevel" label="Skill Level" className="mb-3">
         <Form.Select
-          name="skillLevel"
+          name="skillLevel" // Using the 'name' attribute
           value={formInput.skillLevel || ''}
           onChange={handleChange}
           required
+          disabled={loading}
         >
           <option value="">Select Skill Level</option>
           <option value="Youth">Youth</option>
@@ -167,7 +177,7 @@ function UserForm({ obj, uid }) {
         {generateTimeOptions()}
       </Form.Group>
 
-      <Button type="submit">{obj && obj.uid ? 'Update' : 'Create'} Profile</Button>
+      <Button type="submit" disabled={loading}>{obj && obj.uid ? 'Update' : 'Create'} Profile</Button>
     </Form>
   );
 }
