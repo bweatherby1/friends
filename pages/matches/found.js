@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { getSingleUser, getUsers } from '../../api/userData';
 import { useAuth } from '../../utils/context/authContext';
 import UserCards from '../../components/UserCards';
-import DateTime from '../../components/DateTime';
+import DateTimeComponent from '../../components/DateTime';
 
 export default function FoundPage() {
   const { user } = useAuth();
@@ -49,7 +49,7 @@ export default function FoundPage() {
   return (
     <div>
       <h1>
-        Users Found for <DateTime />
+        Users Found for <DateTimeComponent />
       </h1>
       <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between' }}>
         {loading && <p>Loading...</p>}

@@ -1,21 +1,21 @@
 import React, { useState, useEffect } from 'react';
 
-export const DateTime = () => {
-  const [date, setDate] = useState(new Date());
+function DateTimeComponent() {
+  const [currentDateTime, setCurrentDateTime] = useState(new Date());
 
   useEffect(() => {
-    const timer = setInterval(() => setDate(new Date()), 1000);
-    return function cleanup() {
-      clearInterval(timer);
-    };
-  });
+    const intervalId = setInterval(() => {
+      setCurrentDateTime(new Date());
+    }, 1000);
+
+    return () => clearInterval(intervalId);
+  }, []);
 
   return (
     <div>
-      <p>{date.toLocaleTimeString()} {date.toLocaleDateString()}</p>
-
+      <p>Current Date and Time: {currentDateTime.toLocaleString()}</p>
     </div>
   );
-};
+}
 
-export default DateTime;
+export default DateTimeComponent; // Export DateTimeComponent as default
