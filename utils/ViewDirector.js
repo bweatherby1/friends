@@ -11,6 +11,8 @@ const ViewDirectorBasedOnUserAuthStatus = ({ component: Component, pageProps }) 
   const { user, userLoading } = useAuth();
   const [userDataLoading, setUserDataLoading] = useState(true);
   const [userHasData, setUserHasData] = useState(false);
+  const [showUserForm, setShowUserForm] = useState(false);
+  const [initialLoadDone, setInitialLoadDone] = useState(false); // New state to track initial load completion
 
   useEffect(() => {
     const fetchData = async () => {
@@ -24,7 +26,7 @@ const ViewDirectorBasedOnUserAuthStatus = ({ component: Component, pageProps }) 
           setUserDataLoading(false);
         }
       } else {
-        setUserHasData(false); // Set userHasData to false when user is not authenticated
+        setUserHasData(false);
         setUserDataLoading(false);
       }
     };
@@ -32,30 +34,45 @@ const ViewDirectorBasedOnUserAuthStatus = ({ component: Component, pageProps }) 
     fetchData();
   }, [user]);
 
-  if (userLoading || userDataLoading) {
+  useEffect(() => {
+    // Set a timeout to mark initial loading as done after 2 seconds
+    const timeout = setTimeout(() => {
+      setInitialLoadDone(true);
+    }, 2000);
+
+    return () => clearTimeout(timeout);
+  }, []);
+
+  useEffect(() => {
+    // Show UserForm only if the user is authenticated and there's no user data available
+    if (initialLoadDone && user && !userHasData) {
+      setShowUserForm(true);
+    } else {
+      setShowUserForm(false);
+    }
+  }, [initialLoadDone, user, userHasData]);
+
+  if (userLoading || userDataLoading || !initialLoadDone) {
     return <Loading />;
   }
 
-  if (user) {
-    if (!userHasData) {
-      return (
-        <div className="container">
-          <UserForm obj={null} uid={user.uid} />
-        </div>
-      );
-    }
-    return (
-      <>
-        <NavBar user={user} />
-        <hr />
-        <div className="container">
-          <Component {...pageProps} />
-        </div>
-      </>
-    );
+  if (!user) {
+    return <Signin />;
   }
 
-  return <Signin />;
+  return (
+    <>
+      <NavBar user={user} />
+      <hr />
+      <div className="container">
+        {showUserForm ? (
+          <UserForm obj={null} uid={user.uid} />
+        ) : (
+          <Component {...pageProps} />
+        )}
+      </div>
+    </>
+  );
 };
 
 ViewDirectorBasedOnUserAuthStatus.propTypes = {
