@@ -253,7 +253,7 @@ body {
   position: fixed;
   bottom: 0; /* Position at the bottom of the viewport */
   left: 0; /* Position at the left of the viewport */
-  width: 13%; /* Set width to 40% of the viewport width */
+  width: 18%; /* Set width to 40% of the viewport width */
   max-height: 60vh; /* Set maximum height to 60% of the viewport height */
   overflow-y: auto; /* Enable vertical scrolling */
   background-color: #fff; /* Add your preferred background color */

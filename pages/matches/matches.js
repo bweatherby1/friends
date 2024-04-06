@@ -111,10 +111,7 @@ function MatchesPage() {
                     {userObj && (
                     <Card.Img variant="top" src={userObj.image || 'fallback_image_url'} className="card-img-top" />
                     )}
-
-                    {console.warn('userObj:', userObj)}
                     <div className="name-overlay">{userObj && userObj.name ? userObj.name : 'Unknown User'}</div>
-
                     {/* Display notification dot if user has unread messages */}
                     {unreadMessages[userObj.uid] > 0 && (
                       <Badge variant="danger" className="notification-dot">{unreadMessages[userObj.uid]}</Badge>
@@ -131,7 +128,6 @@ function MatchesPage() {
                       )}
                       <hr />
                       <Button onClick={() => handleDeleteUser(userObj.uid)} variant="danger">Delete</Button>
-                      {/* Render Message button */}
                       <Button onClick={() => handleOpenMessenger(userObj)} variant="primary">Message</Button>
                     </Card.Body>
                   </div>
