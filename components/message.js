@@ -8,17 +8,15 @@ const MessengerPop = ({ user, handleClose }) => {
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState('');
 
-  const updateMessages = (newMessages) => {
-    setMessages((prevMessages) => {
-      // Create a set of unique message IDs
-      const messageIds = new Set(prevMessages.map((msg) => msg.id));
+  const updateMessages = (prevMessages, newMessages) => {
+    // Create a set of unique message IDs
+    const messageIds = new Set(prevMessages.map((msg) => msg.id));
 
-      // Filter out duplicate messages and update the state
-      return [
-        ...prevMessages,
-        ...newMessages.filter((msg) => !messageIds.has(msg.id)),
-      ];
-    });
+    // Filter out duplicate messages and update the state
+    return [
+      ...prevMessages,
+      ...newMessages.filter((msg) => !messageIds.has(msg.id)),
+    ];
   };
 
   useEffect(() => {
@@ -41,7 +39,7 @@ const MessengerPop = ({ user, handleClose }) => {
         id: doc.id,
         ...doc.data(),
       }));
-      updateMessages(sentMessagesData);
+      setMessages((prevMessages) => updateMessages(prevMessages, sentMessagesData));
     });
 
     const unsubscribeReceived = receivedMessagesQuery.onSnapshot((snapshot) => {
@@ -49,7 +47,7 @@ const MessengerPop = ({ user, handleClose }) => {
         id: doc.id,
         ...doc.data(),
       }));
-      updateMessages(receivedMessagesData);
+      setMessages((prevMessages) => updateMessages(prevMessages, receivedMessagesData));
     });
 
     // Cleanup function
@@ -67,6 +65,7 @@ const MessengerPop = ({ user, handleClose }) => {
           receiver: user.uid,
           text: newMessage,
           timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+          read: false, // Mark new message as unread
         });
         setNewMessage('');
       } catch (error) {

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import {
-  Container, Row, Col, Card, Button,
+  Container, Row, Col, Card, Button, Badge,
 } from 'react-bootstrap';
 import firebase from 'firebase/app';
 import 'firebase/firestore';
@@ -11,6 +11,7 @@ function MatchesPage() {
   const [matchedUsers, setMatchedUsers] = useState([]);
   const [showMessenger, setShowMessenger] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
+  const [unreadMessages, setUnreadMessages] = useState({});
 
   useEffect(() => {
     // Fetch matched users from Firestore
@@ -41,6 +42,24 @@ function MatchesPage() {
     return () => {};
   }, []);
 
+  useEffect(() => {
+    // Check for unread messages
+    const unsubscribe = firebase.firestore().collection('messages')
+      .where('receiver', '==', firebase.auth().currentUser.uid)
+      .where('read', '==', false)
+      .onSnapshot((snapshot) => {
+        const unreadCounts = {};
+        snapshot.forEach((doc) => {
+          const data = doc.data();
+          unreadCounts[data.sender] = (unreadCounts[data.sender] || 0) + 1;
+        });
+        setUnreadMessages(unreadCounts);
+      });
+
+    // Cleanup function
+    return () => unsubscribe();
+  }, []);
+
   const handleDeleteUser = async (uid) => {
     try {
       // Delete the user from Firestore
@@ -58,6 +77,21 @@ function MatchesPage() {
   const handleOpenMessenger = (user) => {
     setSelectedUser(user);
     setShowMessenger(true);
+    // Mark messages as read when opening messenger
+    // Assuming you have a messages collection with 'read' field
+    firebase.firestore().collection('messages')
+      .where('sender', '==', user.uid)
+      .where('receiver', '==', firebase.auth().currentUser.uid)
+      .where('read', '==', false)
+      .get()
+      .then((snapshot) => {
+        snapshot.forEach((doc) => {
+          doc.ref.update({ read: true });
+        });
+      })
+      .catch((error) => {
+        console.error('Error marking messages as read:', error);
+      });
   };
 
   const handleCloseMessenger = () => {
@@ -74,8 +108,12 @@ function MatchesPage() {
               <div className="matched-card">
                 <div className="card-content">
                   <div className="first-content">
-                    <Card.Img variant="top" src={userObj.image} alt={userObj.name} className="card-img-top" />
+                    <Card.Img variant="top" src={userObj.image} className="card-img-top" />
                     <div className="name-overlay">{userObj.name}</div>
+                    {/* Display notification dot if user has unread messages */}
+                    {unreadMessages[userObj.uid] > 0 && (
+                      <Badge variant="danger" className="notification-dot">{unreadMessages[userObj.uid]}</Badge>
+                    )}
                   </div>
                   <div className="second-content">
                     <Card.Body>
