@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { getSingleUser, getUsers } from '../../api/userData';
 import { useAuth } from '../../utils/context/authContext';
 import UserCards from '../../components/UserCards';
+// eslint-disable-next-line import/no-named-as-default
 import DateTimeComponent from '../../components/dateTime';
 
 export default function FoundPage() {

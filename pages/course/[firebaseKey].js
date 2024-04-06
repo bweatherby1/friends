@@ -24,6 +24,7 @@ export default function ViewCourse() {
         </h5>
         <p>{courseDetails.description}</p>
         <hr />
+        <p>{courseDetails.address}</p>
       </div>
     </div>
   );
