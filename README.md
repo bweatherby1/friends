@@ -27,3 +27,21 @@ https://miro.com/app/board/uXjVN9U-VKY=/
 -Javascript
 
 -Cody AI
+
+-VS Code
+
+-Postman
+## To Install
+
+Pull main
+
+create firebase w/google auth and realtime db
+
+create .env file from .env sample - replace whats in "" with firebase keys and delete sample file
+
+npm install
+
+npm run prepare
+
+npm run dev
+
