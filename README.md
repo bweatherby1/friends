@@ -13,6 +13,10 @@ Clicking on your friend clubby will help you find your way around the site if yo
 https://fairwayfriends.netlify.app/
 <img width="960" alt="image" src="https://github.com/user-attachments/assets/e1366ead-9a2e-475f-bcd5-dc3c92d89067">
 
+## Loom Walkthrough
+
+https://www.loom.com/share/fbd659ea8067421b841304458e8808a9?sid=27f48f0b-bafc-4912-8435-c91d504c00e0
+
 ## ERD
 
 ![Fairway Friends (1)](https://github.com/user-attachments/assets/08ea00e8-a033-40f9-911c-4fd93fbd09f1)
