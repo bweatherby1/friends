@@ -16,9 +16,9 @@ https://miro.com/app/board/uXjVN9U-VKY=/
 
 ## Tech Stack
 
-React
-Next.js
-HTML
-CSS
-Javascript
-Cody AI
+-React
+-Next.js
+-HTML
+-CSS
+-Javascript
+-Cody AI
