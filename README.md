@@ -7,6 +7,11 @@ An application designed to bring golfers together anytime they have time, the mi
 https://fairwayfriends.netlify.app/
 <img width="960" alt="image" src="https://github.com/user-attachments/assets/e1366ead-9a2e-475f-bcd5-dc3c92d89067">
 
+## ERD
+
+![image](https://github.com/user-attachments/assets/96279ff8-3113-4f14-a99d-be8596a8d8d4)
+
+
 
 ## Wireframe
 
