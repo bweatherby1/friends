@@ -2,7 +2,10 @@
 
 An application designed to bring golfers together anytime they have time, the middle of the week or last minute middle of the weekend! Golfers can link up via their available times and prefered courses on the go(not yet formatted for mobile but available on such). Users can also send message to one another and link up with previous matched golfers.
 
-## Clubby ![image](https://github.com/user-attachments/assets/b19043f3-13ed-49bf-9d43-38775ec6ff93)
+## Clubby 
+
+Clicking on your friend clubby will help you find your way around the site if you get lost!
+![image](https://github.com/user-attachments/assets/b19043f3-13ed-49bf-9d43-38775ec6ff93)
 
 
 ## Deployed website
