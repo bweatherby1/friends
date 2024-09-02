@@ -9,7 +9,7 @@ https://fairwayfriends.netlify.app/
 
 ## ERD
 
-![image](https://github.com/user-attachments/assets/96279ff8-3113-4f14-a99d-be8596a8d8d4)
+![Fairway Friends (1)](https://github.com/user-attachments/assets/08ea00e8-a033-40f9-911c-4fd93fbd09f1)
 
 
 
